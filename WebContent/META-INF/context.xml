@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource name="jdbc/uprotein_db"
+        auth="Container"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        type="javax.sql.DataSource"
+        maxTotal="20"
+        maxIdle="10"
+        maxWaitMillis="10000"
+        username="root"
+        password="sashaM1l0"
+        url="jdbc:mysql://localhost:3306/uprotein_db?serverTimezone=UTC"/>
+</Context>
