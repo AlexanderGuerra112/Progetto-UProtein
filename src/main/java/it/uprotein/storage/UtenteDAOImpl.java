@@ -35,7 +35,13 @@ public class UtenteDAOImpl implements UtenteDAO {
             ps.setString(2, utente.getCognome());
             ps.setString(3, utente.getEmail());
             ps.setString(4, utente.getPassword());
-            ps.setString(5, "cliente"); 
+            
+            String ruoloDaSalvare = "cliente"; 
+            if (utente.getRuolo() != null && !utente.getRuolo().trim().isEmpty()) {
+                ruoloDaSalvare = utente.getRuolo();
+            }
+            ps.setString(5, ruoloDaSalvare);
+            
             ps.setString(6, utente.getIndirizzoSpedizione());
             ps.setString(7, utente.getTelefono());
 
@@ -141,10 +147,37 @@ public class UtenteDAOImpl implements UtenteDAO {
         u.setNome(rs.getString("nome"));
         u.setCognome(rs.getString("cognome"));
         u.setEmail(rs.getString("email"));
+        u.setPassword(rs.getString("password"));
         u.setRuolo(rs.getString("ruolo"));
         u.setIndirizzoSpedizione(rs.getString("indirizzo_spedizione"));
         u.setTelefono(rs.getString("telefono"));
         u.setDataUltimoGiro(rs.getDate("data_ultimo_giro")); 
         return u;
+    }
+    
+    public synchronized void doUpdatePassword(int idUtente, String nuovaPassword) throws SQLException {
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET password = ? WHERE id_utente = ?";
+
+        try (Connection con = ds.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(updateSQL)) {
+            
+            ps.setString(1, nuovaPassword);
+            ps.setInt(2, idUtente);
+            ps.executeUpdate();
+        }
+    }
+    
+    
+    @Override
+    public synchronized void doUpdateDataGiro(int idUtente, java.sql.Date nuovaData) throws SQLException {
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET data_ultimo_giro = ? WHERE id_utente = ?";
+
+        try (Connection con = ds.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(updateSQL)) {
+            
+            ps.setDate(1, nuovaData);
+            ps.setInt(2, idUtente);
+            ps.executeUpdate();
+        }
     }
 }

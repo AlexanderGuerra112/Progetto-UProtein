@@ -23,5 +23,9 @@ public interface UtenteDAO {
 
     // Restituisce tutti gli utenti con un ordinamento specifico
     List<Utente> doRetrieveAll(String order) throws SQLException;
+    
+    void doUpdatePassword(int idUtente, String nuovaPassword) throws SQLException;
+    
+    void doUpdateDataGiro(int idUtente, java.sql.Date nuovaData) throws SQLException;
 }
 
