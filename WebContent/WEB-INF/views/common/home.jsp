@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>UProtein - Level UP Your Gym Game</title>
     <!-- Collegamento al CSS nella stessa cartella -->
-    <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 <h1>Benvenuto su UProtein!</h1>
