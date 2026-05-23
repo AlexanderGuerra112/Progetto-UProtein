@@ -1,0 +1,107 @@
+/* Palette Colori UProtein [3] */
+:root {
+    --verde-uprotein: #2ECC71;
+    --quasi-nero: #1A1A1A;
+    --bianco: #FFFFFF;
+    --grigio-chiaro: #F5F5F5;
+    --grigio-testo: #6B6B6B;
+}
+
+body {
+    font-family: 'Verdana', sans-serif; /* Font ufficiale [2] */
+    background-color: var(--bianco);
+    color: var(--quasi-nero);
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar Fissa in alto [4] */
+.navbar {
+    background-color: var(--quasi-nero);
+    color: var(--bianco);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    color: var(--verde-uprotein);
+    font-weight: bold; /* Verdana Bold per titoli [2] */
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: var(--bianco);
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Hero Banner promozionale [4] */
+.hero {
+    background-color: var(--grigio-chiaro);
+    padding: 80px 5%;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Bottoni [3] */
+.btn-primary {
+    background-color: var(--verde-uprotein);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    filter: brightness(90%);
+}
+
+/* Griglia Bestseller [4] */
+.bestseller-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 40px 5%;
+}
+
+.product-card {
+    background: var(--bianco);
+    border: 1px solid var(--grigio-chiaro);
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.price {
+    color: var(--verde-uprotein);
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.price-old {
+    color: var(--grigio-testo);
+    text-decoration: line-through;
+    font-size: 14px;
+}
