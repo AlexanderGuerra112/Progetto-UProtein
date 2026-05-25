@@ -49,7 +49,6 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
     }
 
-    @Override
     public synchronized Utente doRetrieveByLogin(String email, String password) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE email = ? AND password = ?";
         Utente utente = null;
@@ -57,8 +56,9 @@ public class UtenteDAOImpl implements UtenteDAO {
         try (Connection con = ds.getConnection(); 
              PreparedStatement ps = con.prepareStatement(selectSQL)) {
             
-            ps.setString(1, email);
-            ps.setString(2, password);
+            // Il .trim() previene errori di battitura eliminando spazi vuoti all'inizio/fine
+            ps.setString(1, email != null ? email.trim() : "");
+            ps.setString(2, password != null ? password.trim() : "");
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

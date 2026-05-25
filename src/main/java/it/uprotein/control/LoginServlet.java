@@ -14,64 +14,105 @@ import jakarta.servlet.http.HttpSession;
 import it.uprotein.model.Utente;
 import it.uprotein.storage.UtenteDAOImpl;
 
-/**
- * Servlet per la gestione dell'autenticazione utente.
- * Mappa l'URL /login come indicato nei diagrammi di progetto.
- */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String azione = request.getParameter("azione");
 
-        
+        // Controlliamo se esiste già un utente in sessione
+        HttpSession session = request.getSession(false);
+        boolean giaLoggato = (session != null && session.getAttribute("utente") != null);
+
         if (azione == null || azione.equalsIgnoreCase("mostra")) {
-            request.getRequestDispatcher("/WEB-INF/views/common/login.jsp").forward(request, response);
-        } 
-        
-        
-        else if (azione.equalsIgnoreCase("controlla")) {
-           
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-
-            
-            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-            
-            UtenteDAOImpl dao = new UtenteDAOImpl(ds);
-            
-            try {
-                Utente user = dao.doRetrieveByLogin(email, password);
-
-                if (user != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("utente", user); 
-                    session.setAttribute("ruolo", user.getRuolo()); 
-                    
-                    response.sendRedirect("home?azione=mostra");
-                } else {
-                    request.setAttribute("errore", "Credenziali non valide. Riprova.");
-                    request.getRequestDispatcher("/WEB-INF/views/common/login.jsp").forward(request, response);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore database");
+            if (giaLoggato) {
+                // Se sei già loggato, ti rimando alla home senza chiederti di nuovo il login
+                response.sendRedirect(request.getContextPath() + "/home");
+            } else {
+                // Se NON sei loggato, ti mostro la pagina di login normale
+                request.getRequestDispatcher("/WEB-INF/views/common/login.jsp")
+                       .forward(request, response);
             }
-        }
-        else if (azione.equalsIgnoreCase("logout")) {
-            HttpSession session = request.getSession(false);
+
+        } else if (azione.equalsIgnoreCase("logout")) {
             if (session != null) {
                 session.invalidate();
             }
-            response.sendRedirect("home?azione=mostra");
+            response.sendRedirect(request.getContextPath() + "/home");
+
+        } else {
+            response.sendRedirect(request.getContextPath() + "/login?azione=mostra");
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+
+        String azione = request.getParameter("azione");
+
+        if (azione == null || !azione.equalsIgnoreCase("controlla")) {
+            response.sendRedirect(request.getContextPath() + "/login?azione=mostra");
+            return;
+        }
+
+        String email    = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        if (email == null || email.trim().isEmpty()
+                || password == null || password.trim().isEmpty()) {
+            request.setAttribute("errore", "Email e password sono obbligatori.");
+            request.getRequestDispatcher("/WEB-INF/views/common/login.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        // Blocco di connessione sicura al DB
+        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+        if (ds == null) {
+            try {
+                javax.naming.Context initContext = new javax.naming.InitialContext();
+                javax.naming.Context envContext = (javax.naming.Context) initContext.lookup("java:/comp/env");
+                ds = (DataSource) envContext.lookup("jdbc/uprotein_db");
+            } catch (Exception e) {
+                log("[UProtein - ERROR] Impossibile recuperare il DataSource: " + e.getMessage());
+            }
+        }
+
+        if (ds == null) {
+            log("[UProtein - ERROR] DataSource nullo definitivo nella LoginServlet.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno del server.");
+            return;
+        }
+
+        UtenteDAOImpl dao = new UtenteDAOImpl(ds);
+
+        try {
+            Utente user = dao.doRetrieveByLogin(email.trim(), password);
+
+            if (user != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("utente", user);
+                session.setAttribute("ruolo",  user.getRuolo());
+                response.sendRedirect(request.getContextPath() + "/home");
+            } else {
+                request.setAttribute("errore", "Email o password non corretti. Riprova.");
+                request.getRequestDispatcher("/WEB-INF/views/common/login.jsp")
+                       .forward(request, response);
+            }
+
+        } catch (SQLException e) {
+            log("[UProtein - ERROR] Eccezione SQL nel login di " + email + ": " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                               "Errore di connessione al database.");
+        }
     }
 }
+
+
+
+ 

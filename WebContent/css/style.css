@@ -1,4 +1,6 @@
-/* Palette Colori UProtein [3] */
+/* ==========================================
+   Palette Colori UProtein
+   ========================================== */
 :root {
     --verde-uprotein: #2ECC71;
     --quasi-nero: #1A1A1A;
@@ -8,14 +10,16 @@
 }
 
 body {
-    font-family: 'Verdana', sans-serif; /* Font ufficiale [2] */
+    font-family: 'Verdana', sans-serif;
     background-color: var(--bianco);
     color: var(--quasi-nero);
     margin: 0;
     padding: 0;
 }
 
-/* Navbar Fissa in alto [4] */
+/* ==========================================
+   1. NAVBAR
+   ========================================== */
 .navbar {
     background-color: var(--quasi-nero);
     color: var(--bianco);
@@ -30,7 +34,7 @@ body {
 
 .logo {
     color: var(--verde-uprotein);
-    font-weight: bold; /* Verdana Bold per titoli [2] */
+    font-weight: bold;
     font-size: 24px;
     text-decoration: none;
 }
@@ -43,7 +47,24 @@ body {
     text-transform: uppercase;
 }
 
-/* Hero Banner promozionale [4] */
+.nav-links a:hover {
+    color: var(--verde-uprotein);
+}
+
+.nav-icons a {
+    color: var(--bianco);
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+.nav-icons a:hover {
+    color: var(--verde-uprotein);
+}
+
+/* ==========================================
+   2. HERO BANNER
+   ========================================== */
 .hero {
     background-color: var(--grigio-chiaro);
     padding: 80px 5%;
@@ -56,23 +77,22 @@ body {
     font-weight: bold;
 }
 
-/* Bottoni [3] */
-.btn-primary {
-    background-color: var(--verde-uprotein);
-    color: white;
-    border: none;
-    padding: 12px 30px;
+.hero p {
+    color: var(--grigio-testo);
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+/* ==========================================
+   3. GRIGLIA BESTSELLER
+   ========================================== */
+.section-title {
+    text-align: center;
+    margin-top: 40px;
     font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
+    font-size: 22px;
 }
 
-.btn-primary:hover {
-    filter: brightness(90%);
-}
-
-/* Griglia Bestseller [4] */
 .bestseller-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -93,6 +113,18 @@ body {
     transform: translateY(-5px);
 }
 
+.product-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.product-img-placeholder {
+    background: #eeeeee;
+    height: 180px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
 .price {
     color: var(--verde-uprotein);
     font-weight: bold;
@@ -104,4 +136,292 @@ body {
     color: var(--grigio-testo);
     text-decoration: line-through;
     font-size: 14px;
+    margin: 0;
+}
+
+/* ==========================================
+   4. BOTTONI
+   ========================================== */
+.btn-primary {
+    background-color: var(--verde-uprotein);
+    color: var(--bianco);
+    border: none;
+    padding: 12px 30px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Verdana', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    filter: brightness(90%);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ==========================================
+   5. LOGIN E REGISTRAZIONE
+   ========================================== */
+.login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: var(--bianco);
+    border: 1px solid var(--grigio-chiaro);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--quasi-nero);
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--quasi-nero);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    font-family: 'Verdana', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: var(--verde-uprotein);
+    outline: none;
+}
+
+.btn-login {
+    background-color: var(--verde-uprotein);
+    color: var(--bianco);
+    border: none;
+    padding: 12px 30px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Verdana', sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    filter: brightness(90%);
+}
+
+.login-container p {
+    font-size: 13px;
+    color: var(--grigio-testo);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-container a {
+    color: var(--verde-uprotein);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+.errore-msg {
+    color: red;
+    font-size: 13px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.successo-msg {
+    color: var(--verde-uprotein);
+    font-size: 13px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ==========================================
+   6. FOOTER
+   ========================================== */
+.footer {
+    background-color: var(--quasi-nero);
+    color: var(--bianco);
+    padding: 40px 5%;
+    margin-top: 50px;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footer-brand h4 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: var(--verde-uprotein);
+}
+
+.footer-brand p {
+    font-size: 12px;
+    color: var(--grigio-testo);
+    margin: 0;
+}
+
+.footer-links a {
+    color: var(--bianco);
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--verde-uprotein);
+}
+
+/* ==========================================
+   7. CARRELLO
+   ========================================== */
+.carrello-container {
+    padding: 40px 5%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.carrello-vuoto {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--grigio-testo);
+}
+
+.carrello-vuoto p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.carrello-inner {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.carrello-lista {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.carrello-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid var(--grigio-chiaro);
+    border-radius: 8px;
+    background-color: var(--bianco);
+}
+
+.carrello-item-img {
+    width: 80px;
+    height: 80px;
+    background-color: #eeeeee;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.carrello-item-info { flex: 1; }
+
+.carrello-item-nome {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.carrello-item-categoria {
+    font-size: 12px;
+    color: var(--grigio-testo);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.carrello-item-azioni { text-align: right; flex-shrink: 0; }
+
+.carrello-quantita {
+    font-size: 13px;
+    color: var(--grigio-testo);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.carrello-subtotale {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-rimuovi {
+    font-size: 12px;
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-rimuovi:hover { text-decoration: underline; }
+
+.carrello-riepilogo {
+    width: 300px;
+    flex-shrink: 0;
+    border: 1px solid var(--grigio-chiaro);
+    border-radius: 8px;
+    padding: 25px;
+    background-color: var(--bianco);
+}
+
+.carrello-riepilogo h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.riepilogo-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--grigio-testo);
+    margin-bottom: 10px;
+}
+
+.riepilogo-totale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 1px solid var(--grigio-chiaro);
+    padding-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
