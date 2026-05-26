@@ -425,3 +425,64 @@ body {
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
+.btn-esci {
+    margin-left: 15px;
+    color: #ff4d4d;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+.btn-esci:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================
+   8. PAGINA PRODOTTI
+   ========================================== */
+.prodotti-header {
+    padding: 30px 5% 0;
+}
+
+.nessun-prodotto {
+    text-align: center;
+    color: var(--grigio-testo);
+    font-size: 16px;
+    padding: 40px;
+    grid-column: 1 / -1;
+}
+
+.product-disponibilita {
+    font-size: 12px;
+    color: var(--grigio-testo);
+    margin-bottom: 10px;
+}
+
+.btn-esaurito {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-checkout {
+    display: block;
+    width: 100%;
+    background-color: var(--verde-uprotein);
+    color: var(--bianco);
+    border: none;
+    padding: 12px 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Verdana', sans-serif;
+    text-transform: uppercase;
+    font-size: 11px;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.btn-checkout:hover {
+    filter: brightness(90%);
+}
