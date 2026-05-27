@@ -26,7 +26,13 @@
     if (utenteLoggato != null) {
 %>
     <a href="${pageContext.request.contextPath}/home">&#128100; <%= utenteLoggato.getNome() %></a>
-<a href="${pageContext.request.contextPath}/login?azione=logout" class="btn-esci">(Esci)</a>
+    
+    <%-- CONTROLLO RUOLO: Mostra l'accesso alla dashboard se l'utente è un admin --%>
+    <% if (utenteLoggato.getRuolo() != null && utenteLoggato.getRuolo().equalsIgnoreCase("admin")) { %>
+        <a href="${pageContext.request.contextPath}/adminProdotto?azione=mostra" style="color: #2ECC71; font-weight: bold; margin: 0 5px;">[Area Admin]</a>
+    <% } %>
+
+    <a href="${pageContext.request.contextPath}/login?azione=logout" class="btn-esci">(Esci)</a>
 <%
     } else {
 %>

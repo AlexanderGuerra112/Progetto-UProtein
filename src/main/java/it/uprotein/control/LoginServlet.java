@@ -98,7 +98,13 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("utente", user);
                 session.setAttribute("ruolo",  user.getRuolo());
-                response.sendRedirect(request.getContextPath() + "/home");
+                
+                // REINDIRIZZAMENTO AUTOMATICO SE SEI ADMIN
+                if (user.getRuolo() != null && user.getRuolo().equalsIgnoreCase("admin")) {
+                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/home");
+                }
             } else {
                 request.setAttribute("errore", "Email o password non corretti. Riprova.");
                 request.getRequestDispatcher("/WEB-INF/views/common/login.jsp")
@@ -112,7 +118,6 @@ public class LoginServlet extends HttpServlet {
         }
     }
 }
-
 
 
  
