@@ -25,7 +25,26 @@ public class ProdottoDAOImpl implements ProdottoDAO {
         this.ds = ds;
     }
 
-    
+    @Override
+    public synchronized List<Prodotto> getProdottiPerRuota(double prezzoMin, double prezzoMax, int stockMinimo) throws SQLException {
+        List<Prodotto> lista = new LinkedList<>();
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE disponibilita_magazzino >= ? AND prezzo >= ? AND prezzo < ? ORDER BY RAND() LIMIT 10";
+        
+        try (Connection con = ds.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(selectSQL)) {
+            
+            ps.setInt(1, stockMinimo);
+            ps.setDouble(2, prezzoMin);
+            ps.setDouble(3, prezzoMax);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapRow(rs)); 
+                }
+            }
+        }
+        return lista;
+    }
     
     
     

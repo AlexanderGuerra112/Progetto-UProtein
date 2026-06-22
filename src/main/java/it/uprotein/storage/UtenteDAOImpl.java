@@ -169,14 +169,15 @@ public class UtenteDAOImpl implements UtenteDAO {
     
     
     @Override
-    public synchronized void doUpdateDataGiro(int idUtente, java.sql.Date nuovaData) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET data_ultimo_giro = ? WHERE id_utente = ?";
-
-        try (Connection con = ds.getConnection(); 
-             PreparedStatement ps = con.prepareStatement(updateSQL)) {
+    public void doUpdateDataUltimoGiro(String email, java.sql.Date data) throws SQLException {
+        String sql = "UPDATE utente SET data_ultimo_giro = ? WHERE email = ?";
+        
+        try (java.sql.Connection con = ds.getConnection();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
             
-            ps.setDate(1, nuovaData);
-            ps.setInt(2, idUtente);
+            ps.setDate(1, data);
+            ps.setString(2, email);
+            
             ps.executeUpdate();
         }
     }

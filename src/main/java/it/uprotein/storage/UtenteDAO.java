@@ -26,6 +26,6 @@ public interface UtenteDAO {
     
     void doUpdatePassword(int idUtente, String nuovaPassword) throws SQLException;
     
-    void doUpdateDataGiro(int idUtente, java.sql.Date nuovaData) throws SQLException;
+    public void doUpdateDataUltimoGiro(String email, java.sql.Date data) throws SQLException;
 }
 

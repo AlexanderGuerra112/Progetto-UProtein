@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Level UP Your Gym Game</title>
-   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css?v=1">
 </head>
 <body>
 
@@ -52,6 +52,22 @@
             COMPRA ORA
         </button>
     </header>
+ 
+
+    <%-- SEZIONE RUOTA DELLA FORTUNA (Nuova) --%>
+    <section class="ruota-banner-section">
+        <div class="ruota-banner-content">
+            <h3>🎡 Tenta la fortuna ogni giorno!</h3>
+            <p>Gira la nostra ruota e vinci proteine, barrette o integratori in omaggio in base alla disponibilità.</p>
+            <% if (utenteLoggato != null) { %>
+                <%-- Se loggato, va dritto alla servlet della ruota --%>
+                <a href="${pageContext.request.contextPath}/ruota" class="btn-ruota">Gira la Ruota</a>
+            <% } else { %>
+                <%-- Se NON loggato, lo mandiamo al login --%>
+                <a href="${pageContext.request.contextPath}/login?azione=mostra" class="btn-ruota">Accedi per Giocare</a>
+            <% } %>
+        </div>
+    </section>
 
     <%-- BESTSELLER --%>
 <section>

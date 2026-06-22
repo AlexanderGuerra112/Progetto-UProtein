@@ -23,4 +23,6 @@ public interface ProdottoDAO {
 
     // Restituisce i prodotti filtrati per categoria
     List<Prodotto> doRetrieveByCategoria(String categoria) throws SQLException;
+    
+    public List<Prodotto> getProdottiPerRuota(double prezzoMin, double prezzoMax, int stockMinimo) throws SQLException;
 }

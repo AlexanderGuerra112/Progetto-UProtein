@@ -486,3 +486,198 @@ body {
 .btn-checkout:hover {
     filter: brightness(90%);
 }
+
+/* ==========================================
+   9. PANNELLO ADMIN
+   ========================================== */
+.admin-container {
+    margin: 30px 5%;
+}
+
+.admin-container h1 {
+    color: var(--quasi-nero);
+    border-bottom: 2px solid var(--verde-uprotein);
+    padding-bottom: 10px;
+    font-size: 24px;
+}
+
+.admin-container h2 {
+    color: var(--quasi-nero);
+    border-bottom: 1px solid var(--grigio-chiaro);
+    padding-bottom: 8px;
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+.uprotein-green {
+    color: var(--verde-uprotein);
+    font-weight: bold;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.admin-table th,
+.admin-table td {
+    border: 1px solid #E0E0E0;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.admin-table th {
+    background-color: var(--quasi-nero);
+    color: var(--bianco);
+    font-weight: bold;
+}
+
+.admin-table tr:nth-child(even) {
+    background-color: #F9F9F9;
+}
+
+.btn-elimina {
+    background-color: #E74C3C;
+    color: var(--bianco);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-block;
+    font-family: 'Verdana', sans-serif;
+}
+
+.btn-elimina:hover {
+    background-color: #C0392B;
+}
+
+.admin-form-container {
+    background-color: var(--grigio-chiaro);
+    padding: 25px;
+    border-radius: 6px;
+    max-width: 650px;
+    margin-top: 20px;
+    border: 1px solid #E0E0E0;
+}
+
+.admin-form-container .form-group input,
+.admin-form-container .form-group textarea,
+.admin-form-container .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Verdana', sans-serif;
+    font-size: 13px;
+}
+
+.btn-salva {
+    background-color: var(--verde-uprotein);
+    color: var(--bianco);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Verdana', sans-serif;
+    transition: background 0.2s;
+}
+
+.btn-salva:hover {
+    filter: brightness(90%);
+}
+
+.nessun-prodotto-admin {
+    text-align: center;
+    color: var(--grigio-testo);
+    padding: 20px;
+}
+
+
+.btn-modifica {
+    background-color: var(--verde-uprotein);
+    color: var(--bianco);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-block;
+    font-family: 'Verdana', sans-serif;
+    margin-right: 5px;
+}
+
+.btn-modifica:hover {
+    filter: brightness(90%);
+}
+
+.btn-annulla {
+    display: inline-block;
+    margin-left: 15px;
+    color: var(--grigio-testo);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.btn-annulla:hover {
+    text-decoration: underline;
+}
+
+.form-elimina {
+    display: inline;
+}
+
+.ruota-banner-section {
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.ruota-banner-content {
+    background-color: #f8f9fa;
+    border: 2px dashed #e74c3c;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.ruota-banner-content h3 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.ruota-banner-content p {
+    color: #7f8c8d;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+
+.btn-ruota {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 25px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-ruota:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
