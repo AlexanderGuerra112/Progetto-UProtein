@@ -41,7 +41,7 @@ public class Carrello implements Serializable {
 
     // Svuota completamente il carrello (es. dopo aver acquistato)
     public void svuota() {
-        elementi.clear();
+        this.elementi = new ArrayList<>();
     }
 
     // Calcola il prezzo totale di tutto il carrello

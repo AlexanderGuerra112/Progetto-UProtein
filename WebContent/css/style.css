@@ -681,3 +681,116 @@ body {
     transform: translateY(-2px);
 }
 
+
+.fattura-box {
+    max-width: 850px;
+    margin: 30px auto;
+    background-color: var(--bianco);
+    padding: 50px;
+    border: 1px solid var(--grigio-chiaro);
+    box-shadow: none; /* In stampa le ombre non servono */
+}
+
+/* Header con brand identity UProtein */
+.fattura-header {
+    text-align: center;
+    border-bottom: 3px solid var(--verde-uprotein);
+    padding-bottom: 25px;
+    margin-bottom: 40px;
+}
+
+.fattura-header .subtitle {
+    color: var(--grigio-testo);
+    font-size: 14px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Formattazione dettagli cliente e titoli sezioni */
+.section-title-small {
+    color: var(--quasi-nero);
+    font-size: 18px;
+    border-bottom: 1px solid var(--grigio-chiaro);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.info-text {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 4px 0;
+}
+
+/* Tabella specifica per il riepilogo fiscale */
+.fattura-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+}
+
+.fattura-table th {
+    background-color: var(--grigio-chiaro);
+    color: var(--quasi-nero);
+    padding: 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.fattura-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid var(--grigio-chiaro);
+    font-size: 14px;
+}
+
+/* Utility di allineamento */
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.font-bold { font-weight: bold; }
+
+/* Riepilogo Totale */
+.fattura-totale {
+    margin-top: 20px;
+    padding: 20px 0;
+    border-top: 2px solid var(--quasi-nero);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Link di navigazione post-acquisto */
+.link-home {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--grigio-testo);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.link-home:hover {
+    color: var(--verde-uprotein);
+}
+
+
+@media print {
+    /* Nasconde tutto ciò che non deve finire sulla carta */
+    .no-print, .navbar, .footer, .btn-primary, .nav-icons {
+        display: none !important;
+    }
+
+    /* Ottimizza il container per il foglio A4 */
+    .fattura-box {
+        margin: 0;
+        padding: 0;
+        border: none;
+        width: 100%;
+    }
+
+    body {
+        background-color: #FFFFFF;
+    }
+}
