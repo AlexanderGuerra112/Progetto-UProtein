@@ -18,7 +18,7 @@ public class CheckoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         
-        // 1. RECUPERO ROBUSTO DEL DATA SOURCE (identico alla tua HomeServlet)
+        
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         if (ds == null) {
             try {
@@ -30,7 +30,7 @@ public class CheckoutServlet extends HttpServlet {
             }
         }
 
-        // 2. CONTROLLO UTENTE E CARRELLO
+        
         Utente utente = (Utente) session.getAttribute("utente");
         Carrello carrello = (Carrello) session.getAttribute("carrello");
         
@@ -44,20 +44,22 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        // 3. PREPARAZIONE DATI PER LA FATTURA
-        // Salviamo i prodotti in un attributo di request prima che il DAO svuoti il carrello
+        
         request.setAttribute("prodottiFattura", new ArrayList<>(carrello.getElementi()));
         request.setAttribute("totaleFattura", carrello.getTotale());
 
-        // 4. SALVATAGGIO ORDINE
+        
         String metodoPagamento = request.getParameter("metodoPagamento");
         OrdineDAO ordineDao = new OrdineDAOImpl(ds);
 
         try {
-            // doSave scriverà nel DB e chiamerà carrello.svuota() come richiesto [3]
+           
             ordineDao.doSave(utente, carrello, metodoPagamento);
-            
-            // 5. FORWARD ALLA FATTURA (Percorso corretto con 'views' e cartella 'client')
+            String metodoScelto = request.getParameter("metodoPagamento");
+            if (metodoScelto == null) metodoScelto = "Carta di Credito";
+
+           request.setAttribute("metodoPagamentoStampato", metodoScelto);
+                  
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/cliente/fattura.jsp");
             dispatcher.forward(request, response);
             

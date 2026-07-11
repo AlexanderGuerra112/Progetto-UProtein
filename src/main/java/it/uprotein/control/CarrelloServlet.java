@@ -25,7 +25,7 @@ public class CarrelloServlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
 
-        // Il carrello vive in sessione — lo creiamo se non esiste ancora
+        
         Carrello carrello = (Carrello) session.getAttribute("carrello");
         if (carrello == null) {
             carrello = new Carrello();
@@ -39,8 +39,7 @@ public class CarrelloServlet extends HttpServlet {
 
             if (azione.equalsIgnoreCase("mostra")) {
 
-                // MVC: la servlet prepara i dati e li passa alla JSP via request
-                // La JSP non accede mai direttamente alla sessione
+                
                 request.setAttribute("elementiCarrello", carrello.getElementi());
                 request.setAttribute("totale", carrello.getTotale());
                 request.getRequestDispatcher("/WEB-INF/views/common/carrello.jsp")

@@ -27,6 +27,7 @@
                 <p class="info-text"><strong>Nominativo:</strong> <%= utente.getNome() %> <%= utente.getCognome() %></p>
                 <p class="info-text"><strong>Indirizzo:</strong> <%= utente.getIndirizzoSpedizione() %></p>
                 <p class="info-text"><strong>Telefono:</strong> <%= utente.getTelefono() %></p>
+                <p class="info-text"><strong>Metodo di Pagamento:</strong> <%= (request.getAttribute("metodoPagamentoStampato") != null) ? request.getAttribute("metodoPagamentoStampato") : "Non specificato" %></p>
             <% } %>
         </div>
 
@@ -41,7 +42,7 @@
             </thead>
             <tbody>
                 <% 
-                    // Recuperiamo la copia dei prodotti salvata nella request prima dello svuotamento
+                    
                     List<ElementoCarrello> prodottiFattura = (List<ElementoCarrello>) request.getAttribute("prodottiFattura");
                     if (prodottiFattura != null && !prodottiFattura.isEmpty()) {
                         for (ElementoCarrello elemento : prodottiFattura) {

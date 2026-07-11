@@ -41,8 +41,7 @@
         <h2 class="section-title">Il tuo Carrello</h2>
 
         <%
-            // MVC: leggiamo i dati preparati dalla servlet tramite request
-            // Non tocchiamo mai la sessione direttamente
+           
             List<ElementoCarrello> elementi =
                 (List<ElementoCarrello>) request.getAttribute("elementiCarrello");
             Double totale = (Double) request.getAttribute("totale");
@@ -97,12 +96,9 @@
                     </div>
                     
                     <% if (session.getAttribute("utente") != null) { %>
-                        <form action="<%= request.getContextPath() %>/checkout" method="post" style="margin-top: 15px;">
-                            <input type="hidden" name="metodoPagamento" value="Carta di Credito">
-                            <button type="submit" class="btn-checkout" style="width: 100%; border: none; cursor: pointer; display: block; text-align: center;">
-                                Procedi al Checkout
-                            </button>
-                        </form>
+                        <a href="<%= request.getContextPath() %>/pagamento" class="btn-checkout" style="display: block; text-align: center;">
+                             Procedi al Pagamento
+                            </a>
                     <% } else { %>
                         <a href="<%= request.getContextPath() %>/login?azione=mostra" class="btn-checkout">
                             Accedi per completare l'ordine
