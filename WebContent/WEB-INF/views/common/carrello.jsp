@@ -73,8 +73,8 @@
                             <p class="carrello-subtotale">
                                 Subtotale: € <%= String.format("%.2f", elemento.getSubtotale()) %>
                             </p>
-                            <a href="<%= request.getContextPath() %>/carrello?azione=rimuovi&idProdotto=<%= elemento.getProdotto().getIdProdotto() %>"
-                               class="btn-rimuovi">Rimuovi</a>
+                            <a href="<%= request.getContextPath() %>/carrello?azione=rimuovi&idProdotto=<%= elemento.getProdotto().getIdProdotto() %>&prezzo=<%= elemento.getProdotto().getPrezzo() %>"
+               class="btn-rimuovi">Rimuovi</a>
                         </div>
                     </div>
                     <% } %>

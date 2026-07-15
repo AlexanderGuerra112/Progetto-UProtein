@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    
     <nav class="navbar">
         <a href="<%= request.getContextPath() %>/home" class="logo">UProtein</a>
         <div class="nav-links">
@@ -37,49 +36,59 @@
         </div>
     </nav>
 
-    
-    <div class="carrello-container" style="max-width: 600px; margin-top: 40px; margin-bottom: 40px;">
-        <h2 class="section-title" style="text-align: center;">Pagamento Sicuro</h2>
-        <p style="text-align: center; margin-bottom: 30px; color: #555;">Inserisci i dati della tua Carta di Credito per completare l'ordine.</p>
+    <div class="pagamento-container">
+        <h2 class="pagamento-title">Pagamento Sicuro</h2>
+        <p class="pagamento-subtitle">Inserisci i dati della tua carta per completare l'acquisto.</p>
 
-        <div class="carrello-inner" style="padding: 30px;">
-            <form action="<%= request.getContextPath() %>/checkout" method="post">
+        <div class="pagamento-card">
+            
+            <%-- Blocco errori dal server --%>
+            <% if (request.getAttribute("errorePagamento") != null) { %>
+                <div class="pagamento-error">
+                    <%= request.getAttribute("errorePagamento") %>
+                </div>
+            <% } %>
+
+            <form action="<%= request.getContextPath() %>/checkout" method="post" class="pagamento-form">
                 
                 <input type="hidden" name="metodoPagamento" value="Carta di Credito">
 
-                <div style="margin-bottom: 20px;">
-                    <label for="titolare" style="display: block; margin-bottom: 8px; font-weight: bold;">Titolare della Carta</label>
-                    <input type="text" id="titolare" name="titolare" required placeholder="Mario Rossi" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                <div class="form-group">
+                    <label for="titolare">Titolare della Carta</label>
+                    <input type="text" id="titolare" name="titolare" required 
+                           placeholder="Mario Rossi" class="input-field" autocomplete="cc-name">
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <label for="numero_carta" style="display: block; margin-bottom: 8px; font-weight: bold;">Numero della Carta</label>
-                    <input type="text" id="numero_carta" name="numero_carta" required pattern="[0-9]{16}" title="Inserisci esattamente le 16 cifre della carta, senza spazi" placeholder="1234 5678 1234 5678" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                <div class="form-group">
+                    <label for="numero_carta">Numero della Carta</label>
+                    <input type="text" id="numero_carta" name="numero_carta" required 
+                           placeholder="1234 5678 1234 5678" class="input-field" autocomplete="cc-number">
                 </div>
 
-                <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                    <div style="flex: 1;">
-                        <label for="scadenza" style="display: block; margin-bottom: 8px; font-weight: bold;">Scadenza (MM/AA)</label>
-                        <input type="text" id="scadenza" name="scadenza" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Formato richiesto: MM/AA (es. 12/26)" placeholder="12/26" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                <div class="form-row-split">
+                    <div class="form-group">
+                        <label for="scadenza">Scadenza (MM/AA)</label>
+                        <input type="text" id="scadenza" name="scadenza" required 
+                               placeholder="12/26" class="input-field" autocomplete="cc-exp">
                     </div>
-                    <div style="flex: 1;">
-                        <label for="cvv" style="display: block; margin-bottom: 8px; font-weight: bold;">CVV</label>
-                        <input type="text" id="cvv" name="cvv" required pattern="[0-9]{3}" title="Inserisci il codice di sicurezza a 3 cifre posto sul retro" placeholder="123" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;">
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="password" id="cvv" name="cvv" required 
+                               placeholder="123" class="input-field" autocomplete="cc-csc">
                     </div>
                 </div>
 
-                <button type="submit" class="btn-checkout" style="width: 100%; border: none; cursor: pointer; padding: 15px; font-size: 16px; font-weight: bold; text-align: center;">
+                <button type="submit" class="btn-checkout">
                     Paga e Conferma Ordine
                 </button>
                 
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="<%= request.getContextPath() %>/carrello?azione=mostra" style="color: #666; text-decoration: underline;">&larr; Annulla e torna al carrello</a>
+                <div class="pagamento-actions">
+                    <a href="<%= request.getContextPath() %>/carrello?azione=mostra" class="link-back">&larr; Annulla e torna al carrello</a>
                 </div>
             </form>
         </div>
     </div>
 
-    
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-brand">
@@ -92,6 +101,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="<%= request.getContextPath() %>/js/pagamento.js"></script>
 
 </body>
 </html>

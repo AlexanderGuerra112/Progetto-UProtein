@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Fattura Ordine</title>
-   
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -15,7 +14,7 @@
         
         <div class="fattura-header">
             <h1 class="logo">UPROTEIN</h1>
-            <p class="subtitle"> Level UP Your Style & Integration</p>
+            <p class="subtitle">Level UP Your Style & Integration</p>
         </div>
 
         <div class="carrello-item-info">
@@ -42,7 +41,7 @@
             </thead>
             <tbody>
                 <% 
-                    
+                    @SuppressWarnings("unchecked")
                     List<ElementoCarrello> prodottiFattura = (List<ElementoCarrello>) request.getAttribute("prodottiFattura");
                     if (prodottiFattura != null && !prodottiFattura.isEmpty()) {
                         for (ElementoCarrello elemento : prodottiFattura) {
@@ -69,10 +68,10 @@
         <div class="riepilogo-totale fattura-totale">
             <span>TOTALE PAGATO:</span>
             <%
-                // Recuperiamo il totale salvato nella request
                 Double totaleFattura = (Double) request.getAttribute("totaleFattura");
+                double totaleVisualizzato = (totaleFattura != null) ? totaleFattura : 0.0;
             %>
-            <span class="price">€<%= (totaleFattura != null) ? String.format("%.2f", totaleFattura) : "0.00" %></span>
+            <span class="price">€<%= String.format("%.2f", totaleVisualizzato) %></span>
         </div>
 
         <div class="no-print actions-center">

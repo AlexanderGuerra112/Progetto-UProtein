@@ -84,12 +84,26 @@ public class CarrelloServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/carrello?azione=mostra");
                 }
 
-            } else if (azione.equalsIgnoreCase("rimuovi")) {
+             } else if (azione.equalsIgnoreCase("rimuovi")) {
 
                 int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
-                carrello.rimuoviProdotto(idProdotto);
-                response.sendRedirect(request.getContextPath() + "/carrello?azione=mostra");
+                String prezzoParam = request.getParameter("prezzo");
 
+                // Se la JSP ci passa anche il prezzo, facciamo una rimozione mirata
+                if (prezzoParam != null && !prezzoParam.trim().isEmpty()) {
+                    try {
+                        double prezzo = Double.parseDouble(prezzoParam.trim());
+                        carrello.rimuoviProdotto(idProdotto, prezzo);
+                    } catch (NumberFormatException e) {
+                        log("[UProtein - WARNING] Prezzo non valido nella rimozione, uso rimozione generica per ID.");
+                        carrello.rimuoviProdotto(idProdotto);
+                    }
+                } else {
+                    // Altrimenti rimuove qualsiasi elemento con quell'ID (comportamento standard)
+                    carrello.rimuoviProdotto(idProdotto);
+                }
+                
+                response.sendRedirect(request.getContextPath() + "/carrello?azione=mostra");
             } else if (azione.equalsIgnoreCase("svuota")) {
 
                 carrello.svuota();

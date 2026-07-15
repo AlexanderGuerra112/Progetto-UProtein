@@ -13,6 +13,7 @@ public class Prodotto implements Serializable{
     private double prezzo;
     private int disponibilitaMagazzino;
     private String immagineUrl;
+    private int quantita;
     
     public Prodotto() {
     	
@@ -85,7 +86,13 @@ public class Prodotto implements Serializable{
 		this.immagineUrl = immagineUrl;
 	}
 	
-    
+	public int getQuantita() {
+	    return quantita;
+	}
+
+	public void setQuantita(int quantita) {
+	    this.quantita = quantita;
+	}
     
     
 }

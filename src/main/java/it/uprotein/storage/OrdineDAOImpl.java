@@ -1,8 +1,12 @@
 package it.uprotein.storage;
 
 import java.sql.*;
+import java.util.ArrayList; // Aggiunto import per ArrayList
+import java.util.List;      // Aggiunto import per List
 import javax.sql.DataSource;
 import it.uprotein.model.*;
+import it.uprotein.model.Prodotto;
+import it.uprotein.model.Ordine;
 
 public class OrdineDAOImpl implements OrdineDAO {
     private DataSource ds;
@@ -22,7 +26,6 @@ public class OrdineDAOImpl implements OrdineDAO {
         String insertOrdine = "INSERT INTO ORDINE (id_utente, data_ordine, totale_ordine, indirizzo_consegna , stato_ordine, metodo_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
         String insertDettaglio = "INSERT INTO DETTAGLIO_ORDINE (id_ordine, id_prodotto, quantita, prezzo_acquistato) VALUES (?, ?, ?, ?)";
         
-       
         String selectProdotto = "SELECT disponibilita_magazzino, nome FROM PRODOTTO WHERE id_prodotto = ?";
         String updateProdotto = "UPDATE PRODOTTO SET disponibilita_magazzino = disponibilita_magazzino - ? WHERE id_prodotto = ?";
 
@@ -30,7 +33,7 @@ public class OrdineDAOImpl implements OrdineDAO {
             con = ds.getConnection();
             con.setAutoCommit(false); 
 
-            //  CONTROLLO OUT OF STOCK
+            // CONTROLLO OUT OF STOCK
             psSelectProdotto = con.prepareStatement(selectProdotto);
             for (ElementoCarrello elemento : carrello.getElementi()) {
                 psSelectProdotto.setInt(1, elemento.getProdotto().getIdProdotto());
@@ -40,7 +43,6 @@ public class OrdineDAOImpl implements OrdineDAO {
                         int qtaDisponibile = rsProdotto.getInt("disponibilita_magazzino");
                         String nomeProdotto = rsProdotto.getString("nome");
                         
-                        
                         if (qtaDisponibile < elemento.getQuantita()) {
                             throw new SQLException("Attenzione: scorte insufficienti per " + nomeProdotto + ". Pezzi disponibili: " + qtaDisponibile);
                         }
@@ -48,7 +50,7 @@ public class OrdineDAOImpl implements OrdineDAO {
                 }
             }
 
-            //   NUOVO ORDINE
+            // NUOVO ORDINE
             psOrdine = con.prepareStatement(insertOrdine, Statement.RETURN_GENERATED_KEYS);
             psOrdine.setInt(1, utente.getIdUtente());
             psOrdine.setDate(2, new Date(System.currentTimeMillis()));
@@ -58,26 +60,24 @@ public class OrdineDAOImpl implements OrdineDAO {
             psOrdine.setString(6, metodoPagamento);
             psOrdine.executeUpdate();
 
-            
             ResultSet rs = psOrdine.getGeneratedKeys();
             int idOrdine = -1;
             if (rs.next()) {
                 idOrdine = rs.getInt(1);
             }
 
-            //  AGGIORNAMENTO DETTAGLI E DECREMENTO MAGAZZINO
+            // AGGIORNAMENTO DETTAGLI E DECREMENTO MAGAZZINO
             psDettaglio = con.prepareStatement(insertDettaglio);
             psUpdateProdotto = con.prepareStatement(updateProdotto);
             
             for (ElementoCarrello elemento : carrello.getElementi()) {
-                
                 psDettaglio.setInt(1, idOrdine);
                 psDettaglio.setInt(2, elemento.getProdotto().getIdProdotto());
                 psDettaglio.setInt(3, elemento.getQuantita());
                 psDettaglio.setDouble(4, elemento.getProdotto().getPrezzo());
                 psDettaglio.addBatch();
 
-                //  scarico dal magazzino
+                // scarico dal magazzino
                 psUpdateProdotto.setInt(1, elemento.getQuantita());
                 psUpdateProdotto.setInt(2, elemento.getProdotto().getIdProdotto());
                 psUpdateProdotto.addBatch();
@@ -93,7 +93,6 @@ public class OrdineDAOImpl implements OrdineDAO {
             carrello.svuota(); 
 
         } catch (SQLException e) {
-            // Se scatta l Out of Stock o un errore annulliamo tutto 
             if (con != null) con.rollback();  
             throw e;
         } finally {
@@ -103,5 +102,127 @@ public class OrdineDAOImpl implements OrdineDAO {
             if (psUpdateProdotto != null) psUpdateProdotto.close();
             if (con != null) con.close();
         }
+    }
+
+    // ==========================================================================
+    // NUOVO METODO: Recupera lo storico degli ordini di un utente
+    // ==========================================================================
+    @Override
+    public List<Ordine> doRetrieveByUtente(int idUtente) throws SQLException {
+        List<Ordine> ordini = new ArrayList<>();
+        String sql = "SELECT * FROM ORDINE WHERE id_utente = ? ORDER BY data_ordine DESC";
+        
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            con = ds.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idUtente);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Ordine ordine = new Ordine();
+                ordine.setIdOrdine(rs.getInt("id_ordine"));
+                ordine.setIdUtente(rs.getInt("id_utente"));
+                ordine.setDataOrdine(rs.getDate("data_ordine"));
+                ordine.setTotale(rs.getDouble("totale_ordine"));
+                ordine.setIndirizzoConsegna(rs.getString("indirizzo_consegna"));
+                ordine.setStatoOrdine(rs.getString("stato_ordine"));
+                ordine.setMetodoPagamento(rs.getString("metodo_pagamento"));
+                
+                ordini.add(ordine);
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        }
+        
+        return ordini;
+    }
+    
+    @Override
+    public Ordine doRetrieveByKey(int idOrdine) throws SQLException {
+        java.sql.Connection connection = null;
+        java.sql.PreparedStatement preparedStatement = null;
+        java.sql.ResultSet resultSet = null;
+        Ordine ordine = null;
+
+        // Query su misura: usiamo 'totale_ordine' come abbiamo visto nel DB!
+        String selectSQL = "SELECT id_ordine, data_ordine, totale_ordine, id_utente FROM ordine WHERE id_ordine = ?";
+
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, idOrdine);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                ordine = new Ordine();
+                ordine.setIdOrdine(resultSet.getInt("id_ordine"));
+                ordine.setDataOrdine(resultSet.getDate("data_ordine")); // sql.Date
+                
+                // NOTA: Se nel tuo modello Ordine il metodo si chiama setTotaleOrdine, cambia qui sotto!
+                ordine.setTotale(resultSet.getDouble("totale_ordine")); 
+                
+                ordine.setIdUtente(resultSet.getInt("id_utente"));
+            }
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } finally {
+                if (connection != null) connection.close();
+            }
+        }
+        return ordine;
+    }
+
+    @Override
+    public List<Prodotto> doRetrieveProdottiByOrdine(int idOrdine) throws SQLException {
+        java.sql.Connection connection = null;
+        java.sql.PreparedStatement preparedStatement = null;
+        java.sql.ResultSet resultSet = null;
+        List<Prodotto> prodotti = new java.util.ArrayList<>();
+
+        // Query su misura: uniamo 'prodotto' e 'dettaglio_ordine' tramite 'id_prodotto'
+        String selectSQL = "SELECT p.*, d.quantita, d.prezzo_acquistato " +
+                           "FROM prodotto p " +
+                           "JOIN dettaglio_ordine d ON p.id_prodotto = d.id_prodotto " +
+                           "WHERE d.id_ordine = ?";
+
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, idOrdine);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Prodotto p = new Prodotto();
+                p.setIdProdotto(resultSet.getInt("id_prodotto"));
+                p.setNome(resultSet.getString("nome"));
+                p.setCategoria(resultSet.getString("categoria"));
+                
+                // Recuperiamo il prezzo storico bloccato al momento dell'acquisto
+                p.setPrezzo(resultSet.getDouble("prezzo_acquistato")); 
+                
+                // Impostiamo la quantità acquistata (quella aggiunta al Passo 2)
+                p.setQuantita(resultSet.getInt("quantita")); 
+
+                prodotti.add(p);
+            }
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+            } finally {
+                if (connection != null) connection.close();
+            }
+        }
+        return prodotti;
     }
 }
