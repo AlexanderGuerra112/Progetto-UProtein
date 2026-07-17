@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.toast-uprotein {
+    position: fixed;
+    top: 65px;        
+    right: 45px;      
+    background-color: #2ecc71; /* Verde UProtein */
+    color: #ffffff;
+    padding: 8px 14px; 
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 12px;   
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    z-index: 99999;    
+}
+
+.toast-uprotein.toast-uprotein-invisibile {
+    display: none;
+}

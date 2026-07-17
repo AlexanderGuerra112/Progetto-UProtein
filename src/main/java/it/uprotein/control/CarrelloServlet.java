@@ -74,6 +74,8 @@ public class CarrelloServlet extends HttpServlet {
 
                 if (prodotto != null) {
                     carrello.aggiungiProdotto(prodotto, quantita);
+                    
+                    session.setAttribute("mostraToastCarrello", true);
                 }
 
                 // Torna alla pagina da cui l'utente ha cliccato

@@ -6,9 +6,26 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Prodotti</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css?v=3">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/toast.css">
 </head>
 <body>
+
+<%
+    Boolean mostraToast = (Boolean) session.getAttribute("mostraToastCarrello");
+    if (mostraToast != null && mostraToast) {
+        session.removeAttribute("mostraToastCarrello");
+%>
+    <div id="toast-notifica-carrello" class="toast-uprotein">
+        🛒 Prodotto aggiunto al carrello!
+    </div>
+<%
+    }
+%>
+
+
+
+
 
     <nav class="navbar">
         <a href="<%= request.getContextPath() %>/home" class="logo">UProtein</a>
@@ -97,6 +114,6 @@
             </div>
         </div>
     </footer>
-
+<script src="<%= request.getContextPath() %>/js/pop-up.js"></script>
 </body>
 </html>

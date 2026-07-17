@@ -6,9 +6,26 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Level UP Your Gym Game</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css?v=1">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css?v=3">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/toast.css">
 </head>
 <body>
+<%
+    Boolean mostraToast = (Boolean) session.getAttribute("mostraToastCarrello");
+    if (mostraToast != null && mostraToast) {
+        
+        session.removeAttribute("mostraToastCarrello");
+%>
+    <div id="toast-notifica-carrello" class="toast-uprotein">
+        🛒 Prodotto aggiunto al carrello!
+    </div>
+<%
+    }
+%>
+
+
+
+
 
     <%-- NAVBAR --%>
     <nav class="navbar">
@@ -113,6 +130,6 @@
             </div>
         </div>
     </footer>
-
+<script src="<%= request.getContextPath() %>/js/pop-up.js"></script>
 </body>
 </html>
