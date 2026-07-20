@@ -65,8 +65,8 @@
 
     <%-- HERO BANNER --%>
     <header class="hero">
-        <h1>FINO AL 75% DI SCONTO</h1>
-        <p>I migliori supplementi per il tuo level UP.</p>
+        <h1>LEVEL UP YOUR GYM GAME</h1>
+        <p>Proteine, creatina e barrette della massima qualità per i tuoi workout.</p>
         <button class="btn-primary" onclick="location.href='${pageContext.request.contextPath}/prodotti?azione=mostra'">
             COMPRA ORA
         </button>
@@ -99,7 +99,7 @@
                         if (count >= 4) break; // Mostriamo solo i primi 4 in home
             %>
                     <div class="product-card">
-                        <div class="product-img-placeholder"></div>
+                        <img src="<%= request.getContextPath() %>/images/<%= p.getImmagineUrl() %>" alt="<%= p.getNome() %>" class="product-img">
                         <h3><%= p.getNome() %></h3>
                         <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
                         <form action="<%= request.getContextPath() %>/carrello" method="GET">

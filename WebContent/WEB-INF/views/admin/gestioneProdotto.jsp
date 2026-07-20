@@ -11,8 +11,10 @@
 <body>
 
 <div class="admin-container">
-
-    <h1>Dashboard Amministratore - <span class="uprotein-green">UProtein</span></h1>
+    <div class="admin-header">
+        <h1>Dashboard Amministratore - <span class="uprotein-green">UProtein</span></h1>
+        <a href="<%= request.getContextPath() %>/" class="btn-home-admin"> Torna alla Home</a>
+    </div>
 
     <h2>Catalogo Prodotti</h2>
 
@@ -78,7 +80,7 @@
     <h2><%= isModifica ? "Modifica Prodotto" : "Aggiungi un Nuovo Prodotto" %></h2>
 
     <div class="admin-form-container">
-        <form action="<%= request.getContextPath() %>/adminProdotto" method="POST">
+       <form action="<%= request.getContextPath() %>/adminProdotto" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="azione" value="salva">
             <input type="hidden" name="id"
                    value="<%= isModifica ? prodottoDaModificare.getIdProdotto() : "" %>">
@@ -106,12 +108,12 @@
                           placeholder="Inserisci le caratteristiche del prodotto..."><%= isModifica ? prodottoDaModificare.getDescrizione() : "" %></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="prezzo">Prezzo di Vendita (€):</label>
-                <input type="number" id="prezzo" name="prezzo"
-                       step="1.00" min="0.90" required placeholder="Es. 29.90"
-                       value="<%= isModifica ? prodottoDaModificare.getPrezzo() : "" %>">
-            </div>
+           <div class="form-group">
+    <label for="prezzo">Prezzo di Vendita (€):</label>
+    <input type="number" id="prezzo" name="prezzo"
+           step="0.01" min="0" required placeholder="Es. 29.90"
+           value="<%= isModifica ? prodottoDaModificare.getPrezzo() : "" %>">
+</div>
 
             <div class="form-group">
                 <label for="disponibilita">Quantità in Magazzino:</label>
@@ -121,11 +123,18 @@
             </div>
 
             <div class="form-group">
-                <label for="immagine_url">URL Immagine:</label>
-                <input type="text" id="immagine_url" name="immagine_url"
-                       placeholder="Es. immagini/prodotti/whey.jpg"
-                       value="<%= isModifica && prodottoDaModificare.getImmagineUrl() != null ? prodottoDaModificare.getImmagineUrl() : "" %>">
-            </div>
+    <label for="foto">Seleziona Immagine Prodotto:</label>
+    <input type="file" id="foto" name="foto" accept="image/*" <%= isModifica ? "" : "required" %>>
+
+    <input type="hidden" name="immagine_url_esistente"
+           value="<%= isModifica && prodottoDaModificare.getImmagineUrl() != null ? prodottoDaModificare.getImmagineUrl() : "" %>">
+
+    <% if (isModifica && prodottoDaModificare.getImmagineUrl() != null && !prodottoDaModificare.getImmagineUrl().isEmpty()) { %>
+        <p class="info-immagine-attuale">
+            Immagine attuale: <strong><%= prodottoDaModificare.getImmagineUrl() %></strong> (Lascia vuoto per non cambiarla)
+        </p>
+    <% } %>
+</div>
 
             <button type="submit" class="btn-salva">
                 <%= isModifica ? "Aggiorna Prodotto" : "Salva nel Catalogo" %>

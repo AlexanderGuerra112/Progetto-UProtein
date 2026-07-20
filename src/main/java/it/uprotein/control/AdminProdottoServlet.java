@@ -1,22 +1,31 @@
 package it.uprotein.control;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import it.uprotein.model.Prodotto;
 import it.uprotein.model.Utente;
 import it.uprotein.storage.ProdottoDAOImpl;
 
 @WebServlet("/adminProdotto")
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
+    maxFileSize = 1024 * 1024 * 10,       // 10 MB
+    maxRequestSize = 1024 * 1024 * 50     // 50 MB
+)
 public class AdminProdottoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -135,7 +144,7 @@ public class AdminProdottoServlet extends HttpServlet {
 
         try {
 
-            // azione=elimina -> elimina il prodotto (POST è più sicuro di GET)
+            // azione=elimina
             if (azione != null && azione.equalsIgnoreCase("elimina")) {
                 String idStr = request.getParameter("id");
                 if (idStr == null || idStr.trim().isEmpty()) {
@@ -146,7 +155,7 @@ public class AdminProdottoServlet extends HttpServlet {
                 dao.doDelete(id);
                 response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
 
-            // azione=salva -> inserisce o aggiorna un prodotto
+            // azione=salva
             } else if (azione != null && azione.equalsIgnoreCase("salva")) {
 
                 String idStr = request.getParameter("id");
@@ -164,13 +173,35 @@ public class AdminProdottoServlet extends HttpServlet {
                     return;
                 }
 
+                // --- GESTIONE UPLOAD IMMAGINE ---
+                Part filePart = request.getPart("foto");
+                String fileName = null;
+
+                if (filePart != null && filePart.getSize() > 0) {
+                    // Estrae solo il nome originale del file (es: "nuovacreatina.png")
+                    fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+                    // Individua il percorso della cartella "images" dentro la Web App
+                    String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
+                    File uploadDir = new File(uploadPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdir();
+                    }
+
+                    // Salva il file caricato nella cartella /images/ del server
+                    filePart.write(uploadPath + File.separator + fileName);
+                } else {
+                    // Se non è stato caricato nessun nuovo file, recupera l'immagine precedente (in modifica)
+                    fileName = request.getParameter("immagine_url_esistente");
+                }
+
                 Prodotto p = new Prodotto();
                 p.setNome(nome.trim());
                 p.setCategoria(categoria.trim());
                 p.setDescrizione(descrizione != null ? descrizione.trim() : "");
                 p.setPrezzo(Double.parseDouble(prezzoStr.trim()));
                 p.setDisponibilitaMagazzino(Integer.parseInt(disponibilitaStr.trim()));
-                p.setImmagineUrl(request.getParameter("immagine_url"));
+                p.setImmagineUrl(fileName != null ? fileName : "");
 
                 if (idStr == null || idStr.trim().isEmpty()) {
                     dao.doSave(p);
