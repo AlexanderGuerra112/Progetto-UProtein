@@ -137,6 +137,7 @@ public class RuotaServlet extends HttpServlet {
                 prodottoRegalo.setNome(prodottoVinto.getNome() + " 🎁 (Premio Ruota)");
                 prodottoRegalo.setPrezzo(0.0);
                 prodottoRegalo.setCategoria(prodottoVinto.getCategoria());
+                prodottoRegalo.setImmagineUrl(prodottoVinto.getImmagineUrl());
                 // Inserimento dell'omaggio nel carrello con quantità 1
                 carrello.aggiungiProdotto(prodottoRegalo, 1);
                 

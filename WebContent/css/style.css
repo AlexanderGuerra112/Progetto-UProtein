@@ -118,11 +118,13 @@ body {
     margin-bottom: 8px;
 }
 
-.product-img-placeholder {
-    background: #eeeeee;
-    height: 180px;
-    border-radius: 5px;
+.product-img {
+   width: 100%;
+    height: 200px;
+    object-fit: contain;
     margin-bottom: 15px;
+    background: transparent;
+    display: block;
 }
 
 .price {
@@ -348,9 +350,11 @@ body {
 .carrello-item-img {
     width: 80px;
     height: 80px;
-    background-color: #eeeeee;
     border-radius: 6px;
     flex-shrink: 0;
+    object-fit: contain;
+    background: transparent;
+    display: block;
 }
 
 .carrello-item-info { flex: 1; }
@@ -486,6 +490,8 @@ body {
 .btn-checkout:hover {
     filter: brightness(90%);
 }
+
+
 
 /* ==========================================
    9. PANNELLO ADMIN

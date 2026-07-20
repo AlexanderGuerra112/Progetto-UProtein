@@ -74,7 +74,7 @@
                 for (Prodotto p : listaProdotti) {
         %>
             <div class="product-card">
-                <div class="product-img-placeholder"></div>
+            <img src="<%= request.getContextPath() %>/images/<%= p.getImmagineUrl() %>" alt="<%= p.getNome() %>" class="product-img">
                 <h3><%= p.getNome() %></h3>
                 <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
                 <p class="product-disponibilita">

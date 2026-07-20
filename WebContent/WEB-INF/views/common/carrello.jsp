@@ -62,7 +62,7 @@
                 <div class="carrello-lista">
                     <% for (ElementoCarrello elemento : elementi) { %>
                     <div class="carrello-item">
-                        <div class="carrello-item-img"></div>
+                        <img src="<%= request.getContextPath() %>/images/<%= elemento.getProdotto().getImmagineUrl() %>" alt="<%= elemento.getProdotto().getNome() %>" class="carrello-item-img">
                         <div class="carrello-item-info">
                             <h3 class="carrello-item-nome"><%= elemento.getProdotto().getNome() %></h3>
                             <p class="carrello-item-categoria"><%= elemento.getProdotto().getCategoria() %></p>
