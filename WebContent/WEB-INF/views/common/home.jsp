@@ -6,8 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Level UP Your Gym Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css?v=3">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/toast.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 <%
@@ -46,9 +48,9 @@
                 
                 <%-- CONTROLLO RUOLO --%>
                 <% if (utenteLoggato.getRuolo() != null && utenteLoggato.getRuolo().equalsIgnoreCase("admin")) { %>
-                    <a href="${pageContext.request.contextPath}/adminProdotto?azione=mostra" class="nav-btn nav-admin">[Area Admin]</a>
+                    <a href="${pageContext.request.contextPath}/admin/adminProdotto?azione=mostra" class="nav-btn nav-admin">[Area Admin]</a>
                 <% } else { %>
-                    <a href="${pageContext.request.contextPath}/storico-ordini" class="nav-btn nav-orders">📦 I Miei Ordini</a>
+                    <a href="${pageContext.request.contextPath}/common/storico-ordini" class="nav-btn nav-orders">📦 I Miei Ordini</a>
                 <% } %>
 
                 <a href="${pageContext.request.contextPath}/login?azione=logout" class="btn-esci">(Esci)</a>
@@ -63,6 +65,7 @@
         </div>
     </nav>
 
+<main>
     <%-- HERO BANNER --%>
     <header class="hero">
         <h1>LEVEL UP YOUR GYM GAME</h1>
@@ -78,7 +81,7 @@
             <h3>🎡 Tenta la fortuna ogni giorno!</h3>
             <p>Gira la nostra ruota e vinci proteine, barrette o integratori in omaggio in base alla disponibilità.</p>
             <% if (utenteLoggato != null) { %>
-                <a href="${pageContext.request.contextPath}/ruota" class="btn-ruota">Gira la Ruota</a>
+                <a href="${pageContext.request.contextPath}/common/ruota" class="btn-ruota">Gira la Ruota</a>
             <% } else { %>
                 <a href="${pageContext.request.contextPath}/login?azione=mostra" class="btn-ruota">Accedi per Giocare</a>
             <% } %>
@@ -120,7 +123,7 @@
             %>
         </div>
     </section>
-
+</main>
     <%-- FOOTER --%>
     <footer class="footer">
         <div class="footer-inner">

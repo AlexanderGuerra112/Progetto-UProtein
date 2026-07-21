@@ -6,7 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - I Miei Ordini</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css?v=1">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/responsive.css">
 </head>
 <body>
 
@@ -29,9 +31,9 @@
                 
                 <%-- CONTROLLO RUOLO --%>
                 <% if (utenteLoggato.getRuolo() != null && utenteLoggato.getRuolo().equalsIgnoreCase("admin")) { %>
-                    <a href="<%= request.getContextPath() %>/adminProdotto?azione=mostra" class="nav-btn nav-admin">[Area Admin]</a>
+                    <a href="<%= request.getContextPath() %>/admin/adminProdotto?azione=mostra" class="nav-btn nav-admin">[Area Admin]</a>
                 <% } else { %>
-                    <a href="<%= request.getContextPath() %>/storico-ordini" class="nav-btn nav-orders">📦 I Miei Ordini</a>
+                    <a href="<%= request.getContextPath() %>/common/storico-ordini" class="nav-btn nav-orders">📦 I Miei Ordini</a>
                 <% } %>
                 
                 <a href="<%= request.getContextPath() %>/login?azione=logout" class="btn-esci">(Esci)</a>
@@ -45,14 +47,14 @@
             <a href="<%= request.getContextPath() %>/carrello?azione=mostra">&#128722; Carrello</a>
         </div>
     </nav>
-
+<main>
     <%-- INTESTAZIONE PAGINA (Stile coerente con pagina prodotti) --%>
     <div class="prodotti-header">
         <h2 class="section-title">📦 Il tuo storico ordini</h2>
     </div>
 
     <%-- CONTENUTO STORICO ORDINI --%>
-    <main class="container-storico">
+    <div class="container-storico">
         <p class="sottotitolo-pagina">Qui puoi visualizzare lo stato e i dettagli di tutti i tuoi acquisti.</p>
 
         <%
@@ -101,7 +103,7 @@
                                 </td>
                                 <td><%= ord.getMetodoPagamento() %></td>
                                 <td>
-                                    <a href="<%= request.getContextPath() %>/dettaglio-ordine?id=<%= ord.getIdOrdine() %>" class="btn-dettaglio">
+                                    <a href="<%= request.getContextPath() %>/common/dettaglio-ordine?id=<%= ord.getIdOrdine() %>" class="btn-dettaglio">
                                         🔍 Vedi Dettaglio
                                     </a>
                                 </td>
@@ -115,6 +117,7 @@
         <%
             }
         %>
+        </div>
     </main>
 
     <%-- FOOTER (Identico alla pagina prodotti) --%>

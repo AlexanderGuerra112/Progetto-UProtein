@@ -6,8 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Prodotti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css?v=3">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/toast.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/responsive.css">
 </head>
 <body>
 
@@ -53,7 +55,7 @@
             <a href="<%= request.getContextPath() %>/carrello?azione=mostra">&#128722; Carrello</a>
         </div>
     </nav>
-
+<main>
     <%-- INTESTAZIONE PAGINA --%>
     <div class="prodotti-header">
         <%
@@ -101,6 +103,7 @@
             }
         %>
     </div>
+</main>
 
     <footer class="footer">
         <div class="footer-inner">

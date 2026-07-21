@@ -5,11 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
-    <div class="login-container">
+    <main class="login-container">
         <h2>Accedi a UProtein</h2>
 
         <%-- Messaggio di errore inviato dalla Servlet --%>
@@ -49,7 +51,7 @@
         </form>
 
         <p>Non hai un account? <a href="${pageContext.request.contextPath}/registrazione?azione=mostra">Registrati qui</a></p>
-    </div>
+    </main>
 
 </body>
 </html>

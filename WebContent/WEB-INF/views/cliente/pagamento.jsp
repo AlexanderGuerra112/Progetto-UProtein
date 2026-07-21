@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Pagamento Sicuro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/responsive.css">
 </head>
 <body>
 
@@ -36,7 +38,7 @@
         </div>
     </nav>
 
-    <div class="pagamento-container">
+    <main class="pagamento-container">
         <h2 class="pagamento-title">Pagamento Sicuro</h2>
         <p class="pagamento-subtitle">Inserisci i dati della tua carta per completare l'acquisto.</p>
 
@@ -49,7 +51,7 @@
                 </div>
             <% } %>
 
-            <form action="<%= request.getContextPath() %>/checkout" method="post" class="pagamento-form">
+            <form action="<%= request.getContextPath() %>/common/checkout" method="post" class="pagamento-form">
                 
                 <input type="hidden" name="metodoPagamento" value="Carta di Credito">
 
@@ -87,7 +89,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </main>
 
     <footer class="footer">
         <div class="footer-inner">

@@ -6,11 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Ruota della Fortuna - UProtein</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/ruota.css?v=1.1">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
-<div class="container-ruota">
+<main class="container-ruota">
     <h1>🎡 Ruota della Fortuna</h1>
     <p>I premi cambiano in base alla disponibilità del nostro magazzino! Tenta la fortuna.</p>
     
@@ -29,7 +31,7 @@
             ← Torna alla Home
         </a>
     </div>
-</div>
+</main>
 
 <script>
     const configRuota = {

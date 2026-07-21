@@ -17,14 +17,13 @@ import it.uprotein.model.Ordine;
 import it.uprotein.storage.OrdineDAO;
 import it.uprotein.storage.OrdineDAOImpl;
 
-@WebServlet("/storico-ordini")
+@WebServlet("/common/storico-ordini")
 public class StoricoOrdiniServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private OrdineDAO ordineDAO;
 
     @Override
     public void init() throws ServletException {
-        // Blocco di connessione sicura al DB (Standard UProtein)
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         if (ds == null) {
             try {
@@ -36,7 +35,6 @@ public class StoricoOrdiniServlet extends HttpServlet {
             }
         }
 
-        // Inizializziamo il DAO passando il DataSource recuperato in modo sicuro
         this.ordineDAO = new OrdineDAOImpl(ds);
     }
     @Override
@@ -46,17 +44,14 @@ public class StoricoOrdiniServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Utente utenteLoggato = (Utente) session.getAttribute("utente");
 
-        // 1. Controllo di sicurezza: se non sei loggato, vai al login
         if (utenteLoggato == null) {
             response.sendRedirect(request.getContextPath() + "/login?azione=mostra");
             return;
         }
 
         try {
-            // 2. Recuperiamo gli ordini dell'utente dal DB usando l'ID
             List<Ordine> listaOrdini = ordineDAO.doRetrieveByUtente(utenteLoggato.getIdUtente());
             
-            // 3. Passiamo la lista alla JSP
             request.setAttribute("listaOrdini", listaOrdini);
             
         } catch (SQLException e) {
@@ -64,7 +59,6 @@ public class StoricoOrdiniServlet extends HttpServlet {
             request.setAttribute("erroreStorico", "Impossibile recuperare lo storico degli ordini in questo momento.");
         }
 
-        // 4. Inoltriamo alla pagina JSP dedicata (protetta in WEB-INF)
         request.getRequestDispatcher("/WEB-INF/views/cliente/storico-ordini.jsp").forward(request, response);
     }
 

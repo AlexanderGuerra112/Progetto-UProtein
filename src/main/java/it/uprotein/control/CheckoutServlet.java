@@ -11,7 +11,7 @@ import jakarta.servlet.http.*;
 import it.uprotein.model.*;
 import it.uprotein.storage.*;
 
-@WebServlet("/checkout")
+@WebServlet("/common/checkout")
 public class CheckoutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -32,7 +32,6 @@ public class CheckoutServlet extends HttpServlet {
         Utente utente = (Utente) session.getAttribute("utente");
         Carrello carrello = (Carrello) session.getAttribute("carrello");
         
-        // CORRETTO: Reindirizzamento alle Servlet e non alle JSP dirette
         if (utente == null) {
             response.sendRedirect(request.getContextPath() + "/login?azione=mostra");
             return;
@@ -43,13 +42,11 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        // 1. VALIDAZIONE LATO SERVER (Il tocco di classe accademico)
         String titolare = request.getParameter("titolare");
         String numeroCarta = request.getParameter("numero_carta");
         String scadenza = request.getParameter("scadenza");
         String cvv = request.getParameter("cvv");
 
-        // Puliamo il numero della carta da eventuali spazi inseriti dal formattatore automatico JS
         String numeroCartaPulito = (numeroCarta != null) ? numeroCarta.replaceAll("\\s+", "") : "";
 
         if (titolare == null || titolare.trim().isEmpty() ||
@@ -62,8 +59,7 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        // 2. CREAZIONE FATTURA E SALVATAGGIO ORDINE
-        // Copiamo gli elementi per la fattura *prima* di svuotare il carrello
+       
         request.setAttribute("prodottiFattura", new ArrayList<>(carrello.getElementi()));
         request.setAttribute("totaleFattura", carrello.getTotale());
 
@@ -74,10 +70,8 @@ public class CheckoutServlet extends HttpServlet {
         OrdineDAO ordineDao = new OrdineDAOImpl(ds);
 
         try {
-            // Salva l'ordine nel Database
             ordineDao.doSave(utente, carrello, metodoPagamento);
             
-            // CORRETTO: Svuotiamo il carrello! L'acquisto è completato con successo.
             carrello.svuota();
             session.setAttribute("carrello", carrello);
                   

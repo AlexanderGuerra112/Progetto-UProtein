@@ -6,18 +6,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Amministratore - UProtein</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
-<div class="admin-container">
+<main class="admin-container">
     <div class="admin-header">
         <h1>Dashboard Amministratore - <span class="uprotein-green">UProtein</span></h1>
         <a href="<%= request.getContextPath() %>/" class="btn-home-admin"> Torna alla Home</a>
     </div>
 
     <h2>Catalogo Prodotti</h2>
-
+<div class="tabella-responsiva">
     <table class="admin-table">
         <thead>
             <tr>
@@ -43,11 +45,11 @@
                     <td><%= p.getDisponibilitaMagazzino() %></td>
                     <td>
                         <%-- Modifica: GET è corretto perché non modifica dati --%>
-                        <a href="<%= request.getContextPath() %>/adminProdotto?azione=mostraModifica&id=<%= p.getIdProdotto() %>"
+                        <a href="<%= request.getContextPath() %>/admin/adminProdotto?azione=mostraModifica&id=<%= p.getIdProdotto() %>"
                            class="btn-modifica">Modifica</a>
 
                         <%-- Elimina: POST perché modifica dati nel DB --%>
-                        <form action="<%= request.getContextPath() %>/adminProdotto"
+                        <form action="<%= request.getContextPath() %>/admin/adminProdotto"
                               method="POST"
                              class="form-elimina"
                               onsubmit="return confirm('Sei sicuro di voler eliminare questo prodotto?');">
@@ -71,6 +73,7 @@
             %>
         </tbody>
     </table>
+    </div>
 
     <%
         Prodotto prodottoDaModificare = (Prodotto) request.getAttribute("prodottoDaModificare");
@@ -80,7 +83,7 @@
     <h2><%= isModifica ? "Modifica Prodotto" : "Aggiungi un Nuovo Prodotto" %></h2>
 
     <div class="admin-form-container">
-       <form action="<%= request.getContextPath() %>/adminProdotto" method="POST" enctype="multipart/form-data">
+       <form action="<%= request.getContextPath() %>/admin/adminProdotto" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="azione" value="salva">
             <input type="hidden" name="id"
                    value="<%= isModifica ? prodottoDaModificare.getIdProdotto() : "" %>">
@@ -141,13 +144,13 @@
             </button>
 
             <% if (isModifica) { %>
-                <a href="<%= request.getContextPath() %>/adminProdotto?azione=mostra"
+                <a href="<%= request.getContextPath() %>/admin/adminProdotto?azione=mostra"
                    class="btn-annulla">Annulla</a>
             <% } %>
         </form>
     </div>
 
-</div>
+</main>
 
 </body>
 </html>

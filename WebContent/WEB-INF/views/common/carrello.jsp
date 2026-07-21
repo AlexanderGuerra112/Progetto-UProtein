@@ -6,7 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Carrello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/responsive.css">
 </head>
 <body>
 
@@ -37,7 +39,7 @@
         </div>
     </nav>
 
-    <div class="carrello-container">
+    <main class="carrello-container">
         <h2 class="section-title">Il tuo Carrello</h2>
 
         <%
@@ -96,7 +98,7 @@
                     </div>
                     
                     <% if (session.getAttribute("utente") != null) { %>
-                        <a href="<%= request.getContextPath() %>/pagamento" class="btn-checkout" style="display: block; text-align: center;">
+                        <a href="<%= request.getContextPath() %>/common/pagamento" class="btn-checkout" style="display: block; text-align: center;">
                              Procedi al Pagamento
                             </a>
                     <% } else { %>
@@ -108,7 +110,7 @@
 
             </div>
         <% } %>
-    </div>
+    </main>
 
     <footer class="footer">
         <div class="footer-inner">

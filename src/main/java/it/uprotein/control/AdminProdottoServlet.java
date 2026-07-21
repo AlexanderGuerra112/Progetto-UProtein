@@ -20,11 +20,11 @@ import it.uprotein.model.Prodotto;
 import it.uprotein.model.Utente;
 import it.uprotein.storage.ProdottoDAOImpl;
 
-@WebServlet("/adminProdotto")
+@WebServlet("/admin/adminProdotto")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
-    maxFileSize = 1024 * 1024 * 10,       // 10 MB
-    maxRequestSize = 1024 * 1024 * 50     // 50 MB
+    fileSizeThreshold = 1024 * 1024 * 2,  
+    maxFileSize = 1024 * 1024 * 10,      
+    maxRequestSize = 1024 * 1024 * 50     
 )
 public class AdminProdottoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -33,7 +33,6 @@ public class AdminProdottoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Controllo admin
         HttpSession session = request.getSession(false);
         Utente utente = (session != null) ? (Utente) session.getAttribute("utente") : null;
         if (utente == null || !utente.getRuolo().equalsIgnoreCase("admin")) {
@@ -43,7 +42,6 @@ public class AdminProdottoServlet extends HttpServlet {
             return;
         }
 
-        // Recupera DataSource con fallback JNDI
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         if (ds == null) {
             try {
@@ -65,8 +63,6 @@ public class AdminProdottoServlet extends HttpServlet {
         String azione = request.getParameter("azione");
 
         try {
-
-            // azione=mostra -> mostra la lista prodotti
             if (azione == null || azione.equalsIgnoreCase("mostra")) {
                 List<Prodotto> prodotti = dao.doRetrieveAll(null);
                 request.setAttribute("prodotti", prodotti);
@@ -74,18 +70,17 @@ public class AdminProdottoServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/admin/gestioneProdotto.jsp")
                        .forward(request, response);
 
-            // azione=mostraModifica -> carica il prodotto e precompila il form
             } else if (azione.equalsIgnoreCase("mostraModifica")) {
                 String idStr = request.getParameter("id");
                 if (idStr == null || idStr.trim().isEmpty()) {
-                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
                     return;
                 }
                 int id = Integer.parseInt(idStr.trim());
                 Prodotto prodottoDaModificare = dao.doRetrieveByKey(id);
 
                 if (prodottoDaModificare == null) {
-                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
                     return;
                 }
 
@@ -96,7 +91,7 @@ public class AdminProdottoServlet extends HttpServlet {
                        .forward(request, response);
 
             } else {
-                response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
             }
 
         } catch (SQLException e) {
@@ -113,7 +108,6 @@ public class AdminProdottoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Controllo admin
         HttpSession session = request.getSession(false);
         Utente utente = (session != null) ? (Utente) session.getAttribute("utente") : null;
         if (utente == null || !utente.getRuolo().equalsIgnoreCase("admin")) {
@@ -121,7 +115,6 @@ public class AdminProdottoServlet extends HttpServlet {
             return;
         }
 
-        // Recupera DataSource con fallback JNDI
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         if (ds == null) {
             try {
@@ -144,18 +137,16 @@ public class AdminProdottoServlet extends HttpServlet {
 
         try {
 
-            // azione=elimina
             if (azione != null && azione.equalsIgnoreCase("elimina")) {
                 String idStr = request.getParameter("id");
                 if (idStr == null || idStr.trim().isEmpty()) {
-                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
                     return;
                 }
                 int id = Integer.parseInt(idStr.trim());
                 dao.doDelete(id);
-                response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
 
-            // azione=salva
             } else if (azione != null && azione.equalsIgnoreCase("salva")) {
 
                 String idStr = request.getParameter("id");
@@ -169,29 +160,24 @@ public class AdminProdottoServlet extends HttpServlet {
                         || categoria == null || categoria.trim().isEmpty()
                         || prezzoStr == null || prezzoStr.trim().isEmpty()
                         || disponibilitaStr == null || disponibilitaStr.trim().isEmpty()) {
-                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
                     return;
                 }
 
-                // --- GESTIONE UPLOAD IMMAGINE ---
                 Part filePart = request.getPart("foto");
                 String fileName = null;
 
                 if (filePart != null && filePart.getSize() > 0) {
-                    // Estrae solo il nome originale del file (es: "nuovacreatina.png")
                     fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-                    // Individua il percorso della cartella "images" dentro la Web App
                     String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdir();
                     }
 
-                    // Salva il file caricato nella cartella /images/ del server
                     filePart.write(uploadPath + File.separator + fileName);
                 } else {
-                    // Se non è stato caricato nessun nuovo file, recupera l'immagine precedente (in modifica)
                     fileName = request.getParameter("immagine_url_esistente");
                 }
 
@@ -210,10 +196,10 @@ public class AdminProdottoServlet extends HttpServlet {
                     dao.doUpdate(p);
                 }
 
-                response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
 
             } else {
-                response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
             }
 
         } catch (SQLException e) {

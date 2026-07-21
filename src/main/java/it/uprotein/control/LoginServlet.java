@@ -24,16 +24,13 @@ public class LoginServlet extends HttpServlet {
 
         String azione = request.getParameter("azione");
 
-        // Controlliamo se esiste già un utente in sessione
         HttpSession session = request.getSession(false);
         boolean giaLoggato = (session != null && session.getAttribute("utente") != null);
 
         if (azione == null || azione.equalsIgnoreCase("mostra")) {
             if (giaLoggato) {
-                // Se sei già loggato, ti rimando alla home senza chiederti di nuovo il login
                 response.sendRedirect(request.getContextPath() + "/home");
             } else {
-                // Se NON sei loggato, ti mostro la pagina di login normale
                 request.getRequestDispatcher("/WEB-INF/views/common/login.jsp")
                        .forward(request, response);
             }
@@ -71,7 +68,6 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // Blocco di connessione sicura al DB
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         if (ds == null) {
             try {
@@ -99,9 +95,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("utente", user);
                 session.setAttribute("ruolo",  user.getRuolo());
                 
-                // REINDIRIZZAMENTO AUTOMATICO SE SEI ADMIN
                 if (user.getRuolo() != null && user.getRuolo().equalsIgnoreCase("admin")) {
-                    response.sendRedirect(request.getContextPath() + "/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/admin/adminProdotto?azione=mostra");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/home");
                 }

@@ -6,11 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <title>UProtein - Fattura Ordine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
-    <div class="carrello-container fattura-box">
+    <main class="carrello-container fattura-box">
         
         <div class="fattura-header">
             <h1 class="logo">UPROTEIN</h1>
@@ -84,7 +86,7 @@
                 </a>
             </p>
         </div>
-    </div>
+    </main>
 
 </body>
 </html>

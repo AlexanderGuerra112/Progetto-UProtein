@@ -20,12 +20,11 @@ import it.uprotein.model.Prodotto;
 import it.uprotein.model.Utente;
 import it.uprotein.storage.ProdottoDAOImpl;
 
-@WebServlet("/ruota")
+@WebServlet("/common/ruota")
 public class RuotaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // GET: Gestisce il caricamento iniziale e mostra la pagina della ruota
-    @Override
+        @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
@@ -38,7 +37,6 @@ public class RuotaServlet extends HttpServlet {
         Utente utente = (Utente) session.getAttribute("utente");
         boolean giaGirato = false;
 
-        // Verifica se l'utente ha già effettuato la giocata oggi
         if (utente.getDataUltimoGiro() != null && utente.getDataUltimoGiro().toLocalDate().equals(LocalDate.now())) {
             giaGirato = true;
         }
@@ -68,7 +66,6 @@ public class RuotaServlet extends HttpServlet {
         }
     }
 
-    // POST: Gestisce l'estrazione del premio, l'inserimento nel carrello a 0€ e risponde in JSON
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -81,7 +78,6 @@ public class RuotaServlet extends HttpServlet {
 
         Utente utente = (Utente) session.getAttribute("utente");
 
-        // 1. Controllo di sicurezza: ha già giocato oggi?
         if (utente.getDataUltimoGiro() != null && utente.getDataUltimoGiro().toLocalDate().equals(LocalDate.now())) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -89,7 +85,6 @@ public class RuotaServlet extends HttpServlet {
             return;
         }
 
-        // 2. Recupero degli spicchi generati per la sessione corrente
         @SuppressWarnings("unchecked")
         List<Prodotto> prodottiRuota = (List<Prodotto>) session.getAttribute("prodottiRuota");
         if (prodottiRuota == null || prodottiRuota.isEmpty()) {
@@ -97,11 +92,9 @@ public class RuotaServlet extends HttpServlet {
             return;
         }
 
-        // 3. Estrazione casuale del prodotto vincente
         int indiceVincente = (int) (Math.random() * prodottiRuota.size());
         Prodotto prodottoVinto = prodottiRuota.get(indiceVincente);
 
-        // 4. Aggiornamento dello stato dell'utente nella sessione corrente
         utente.setDataUltimoGiro(java.sql.Date.valueOf(LocalDate.now()));
 
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
@@ -115,30 +108,24 @@ public class RuotaServlet extends HttpServlet {
             }
         }
 
-        // 5. SALVATAGGIO DATI (DATABASE E CARRELLO IN SESSIONE)
        try {
-            // Aggiorna la data dell'ultimo giro nel Database (tramite il tuo DAO)
             it.uprotein.storage.UtenteDAO utenteDao = new it.uprotein.storage.UtenteDAOImpl(ds);
             utenteDao.doUpdateDataUltimoGiro(utente.getEmail(), java.sql.Date.valueOf(LocalDate.now()));
             
-            // Se l'utente ha vinto un articolo reale (id diverso da 0), lo inseriamo nel carrello
             if (prodottoVinto.getIdProdotto() != 0) {
                 
-                // Recuperiamo o creiamo l'oggetto Carrello personalizzato dalla sessione
                 Carrello carrello = (Carrello) session.getAttribute("carrello");
                 if (carrello == null) {
                     carrello = new Carrello();
                     session.setAttribute("carrello", carrello);
                 }
                 
-                // Cloniamo il prodotto impostando il prezzo regalo a 0.0€
                 Prodotto prodottoRegalo = new Prodotto();
                 prodottoRegalo.setIdProdotto(prodottoVinto.getIdProdotto());
                 prodottoRegalo.setNome(prodottoVinto.getNome() + " 🎁 (Premio Ruota)");
                 prodottoRegalo.setPrezzo(0.0);
                 prodottoRegalo.setCategoria(prodottoVinto.getCategoria());
                 prodottoRegalo.setImmagineUrl(prodottoVinto.getImmagineUrl());
-                // Inserimento dell'omaggio nel carrello con quantità 1
                 carrello.aggiungiProdotto(prodottoRegalo, 1);
                 
                 System.out.println("[RUOTA] Prodotto aggiunto con successo a 0€ nel carrello di: " + utente.getNome());
@@ -149,7 +136,6 @@ public class RuotaServlet extends HttpServlet {
         }
         
 
-        // 6. RISPOSTA JSON per l'animazione lato Javascript
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         

@@ -1,4 +1,3 @@
-// Recuperiamo le variabili passate dalla JSP attraverso l'oggetto globale configRuota
 let giaGiratoOggi = configRuota.giaGiratoOggi;
 const premiTesto = configRuota.premiTesto;
 const contextPath = configRuota.contextPath;
@@ -36,7 +35,6 @@ function disegnaRuota() {
     }
 }
 
-// Inizializzazione della ruota al caricamento della pagina
 disegnaRuota();
 
 if (giaGiratoOggi) {
@@ -46,46 +44,36 @@ if (giaGiratoOggi) {
 function avviaGiocata() {
     bottone.disabled = true;
 
-    // Chiamata FETCH alla servlet
-    fetch(`${contextPath}/ruota`, { method: "POST" })
+    fetch(`${contextPath}/common/ruota`, { method: "POST" })
     .then(response => {
         if (!response.ok) { throw new Error(response.statusText); }
-        // La servlet ora risponde in JSON, quindi leggiamo come .json() e non più come .text()
         return response.json(); 
     })
     .then(data => {
-        // Gestione di eventuali errori mandati dal server sotto forma di JSON
         if (data.errore) {
             alert(data.errore);
             window.location.reload();
             return;
         }
 
-        // Il server ci passa il nome del prodotto vinto (es. data.nome)
         let nomePremioVinto = data.nome;
         
-        // Cerchiamo l'indice dello spicchio corrispondente nel nostro array dei premi della pagina
         let indiceVincente = premiTesto.indexOf(nomePremioVinto);
         
-        // Se per qualche motivo il nome non combacia, usiamo un indice di riserva (0)
         if (indiceVincente === -1) {
             indiceVincente = 0;
         }
 
-        // --- ANIMAZIONE DELLA RUOTA ---
         let gradiPerSpicchio = 360 / numSpicchi;
-        // Calcolo per far fare 5 giri (1800 gradi) + posizionarsi sullo spicchio corretto
         let gradiFinali = 1800 + (360 - (indiceVincente * gradiPerSpicchio) - (gradiPerSpicchio / 2)); 
         
-        // Attiviamo l'animazione CSS sul canvas
         canvas.style.transform = "rotate(" + gradiFinali + "deg)";
         
-        // Attendiamo 4 secondi (la durata della transizione CSS) prima di mostrare il pop-up
         setTimeout(() => {
             if (nomePremioVinto === "Riprova Domani") {
                 alert("Peccato! Non hai vinto nessun omaggio. Riprova domani!");
             } else {
-                // Usiamo la variabile con il nome reale passata dal server!
+               
                 alert("🎉 Complimenti! Hai vinto l'articolo: " + nomePremioVinto + "!\nLo trovi a 0€ all'interno del tuo carrello!");
             }
             attivaContoAllaRovescia();
@@ -94,7 +82,7 @@ function avviaGiocata() {
     .catch(err => {
         alert("Errore di connessione durante la giocata.");
         console.error(err);
-        bottone.disabled = false; // Riabilitiamo il bottone in caso di errore di rete
+        bottone.disabled = false; 
     });
 }
 
