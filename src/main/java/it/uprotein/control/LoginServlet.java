@@ -96,7 +96,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("ruolo",  user.getRuolo());
                 
                 if (user.getRuolo() != null && user.getRuolo().equalsIgnoreCase("admin")) {
-                    response.sendRedirect(request.getContextPath() + "/admin/admin/adminProdotto?azione=mostra");
+                    response.sendRedirect(request.getContextPath() + "/admin/adminProdotto?azione=mostra");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/home");
                 }

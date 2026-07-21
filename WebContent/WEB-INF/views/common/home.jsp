@@ -40,7 +40,6 @@
         </div>
         <div class="nav-icons">
             <%
-                // Controlliamo se nella sessione c'è un utente loggato
                 it.uprotein.model.Utente utenteLoggato = (it.uprotein.model.Utente) session.getAttribute("utente");
                 if (utenteLoggato != null) {
             %>
