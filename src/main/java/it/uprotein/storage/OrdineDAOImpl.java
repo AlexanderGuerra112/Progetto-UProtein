@@ -1,8 +1,8 @@
 package it.uprotein.storage;
 
 import java.sql.*;
-import java.util.ArrayList; // Aggiunto import per ArrayList
-import java.util.List;      // Aggiunto import per List
+import java.util.ArrayList;
+import java.util.List;
 import javax.sql.DataSource;
 import it.uprotein.model.*;
 import it.uprotein.model.Prodotto;
@@ -16,14 +16,14 @@ public class OrdineDAOImpl implements OrdineDAO {
     }
 
     @Override
-    public synchronized void doSave(Utente utente, Carrello carrello, String metodoPagamento) throws SQLException {
+    public synchronized void doSave(Utente utente, Carrello carrello, String metodoPagamento, String indirizzoConsegna) throws SQLException {
         Connection con = null;
         PreparedStatement psOrdine = null;
         PreparedStatement psDettaglio = null;
         PreparedStatement psSelectProdotto = null; 
         PreparedStatement psUpdateProdotto = null; 
 
-        String insertOrdine = "INSERT INTO ORDINE (id_utente, data_ordine, totale_ordine, indirizzo_consegna , stato_ordine, metodo_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertOrdine = "INSERT INTO ORDINE (id_utente, data_ordine, totale_ordine, indirizzo_consegna, stato_ordine, metodo_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
         String insertDettaglio = "INSERT INTO DETTAGLIO_ORDINE (id_ordine, id_prodotto, quantita, prezzo_acquistato, nome_prodotto, categoria_prodotto) VALUES (?, ?, ?, ?, ?, ?)";        
         String selectProdotto = "SELECT disponibilita_magazzino, nome FROM PRODOTTO WHERE id_prodotto = ?";
         String updateProdotto = "UPDATE PRODOTTO SET disponibilita_magazzino = disponibilita_magazzino - ? WHERE id_prodotto = ?";
@@ -32,7 +32,6 @@ public class OrdineDAOImpl implements OrdineDAO {
             con = ds.getConnection();
             con.setAutoCommit(false); 
 
-            // CONTROLLO OUT OF STOCK
             psSelectProdotto = con.prepareStatement(selectProdotto);
             for (ElementoCarrello elemento : carrello.getElementi()) {
                 psSelectProdotto.setInt(1, elemento.getProdotto().getIdProdotto());
@@ -49,12 +48,11 @@ public class OrdineDAOImpl implements OrdineDAO {
                 }
             }
 
-            // NUOVO ORDINE
             psOrdine = con.prepareStatement(insertOrdine, Statement.RETURN_GENERATED_KEYS);
             psOrdine.setInt(1, utente.getIdUtente());
             psOrdine.setDate(2, new Date(System.currentTimeMillis()));
             psOrdine.setDouble(3, carrello.getTotale()); 
-            psOrdine.setString(4, utente.getIndirizzoSpedizione());
+            psOrdine.setString(4, indirizzoConsegna);
             psOrdine.setString(5, "Confermato");
             psOrdine.setString(6, metodoPagamento);
             psOrdine.executeUpdate();
@@ -65,7 +63,6 @@ public class OrdineDAOImpl implements OrdineDAO {
                 idOrdine = rs.getInt(1);
             }
 
-            // AGGIORNAMENTO DETTAGLI E DECREMENTO MAGAZZINO
             psDettaglio = con.prepareStatement(insertDettaglio);
             psUpdateProdotto = con.prepareStatement(updateProdotto);
             
@@ -78,7 +75,6 @@ public class OrdineDAOImpl implements OrdineDAO {
                 psDettaglio.setString(6, elemento.getProdotto().getCategoria());
                 psDettaglio.addBatch();
 
-                // scarico dal magazzino
                 psUpdateProdotto.setInt(1, elemento.getQuantita());
                 psUpdateProdotto.setInt(2, elemento.getProdotto().getIdProdotto());
                 psUpdateProdotto.addBatch();
@@ -87,10 +83,7 @@ public class OrdineDAOImpl implements OrdineDAO {
             psDettaglio.executeBatch();
             psUpdateProdotto.executeBatch();
 
-            // Se tutto è andato senza errori, salviamo sul db
             con.commit(); 
-            
-            // Svuotiamo il carrello
             carrello.svuota(); 
 
         } catch (SQLException e) {
@@ -105,7 +98,6 @@ public class OrdineDAOImpl implements OrdineDAO {
         }
     }
 
-    
     @Override
     public List<Ordine> doRetrieveByUtente(int idUtente) throws SQLException {
         List<Ordine> ordini = new ArrayList<>();
@@ -144,9 +136,9 @@ public class OrdineDAOImpl implements OrdineDAO {
     
     @Override
     public Ordine doRetrieveByKey(int idOrdine) throws SQLException {
-        java.sql.Connection connection = null;
-        java.sql.PreparedStatement preparedStatement = null;
-        java.sql.ResultSet resultSet = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         Ordine ordine = null;
 
         String selectSQL = "SELECT id_ordine, data_ordine, totale_ordine, id_utente FROM ordine WHERE id_ordine = ?";
@@ -162,9 +154,7 @@ public class OrdineDAOImpl implements OrdineDAO {
                 ordine = new Ordine();
                 ordine.setIdOrdine(resultSet.getInt("id_ordine"));
                 ordine.setDataOrdine(resultSet.getDate("data_ordine")); 
-                
                 ordine.setTotale(resultSet.getDouble("totale_ordine")); 
-                
                 ordine.setIdUtente(resultSet.getInt("id_utente"));
             }
         } finally {
@@ -180,10 +170,10 @@ public class OrdineDAOImpl implements OrdineDAO {
 
     @Override
     public List<Prodotto> doRetrieveProdottiByOrdine(int idOrdine) throws SQLException {
-        java.sql.Connection connection = null;
-        java.sql.PreparedStatement preparedStatement = null;
-        java.sql.ResultSet resultSet = null;
-        List<Prodotto> prodotti = new java.util.ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Prodotto> prodotti = new ArrayList<>();
 
         String selectSQL = "SELECT id_prodotto, nome_prodotto, categoria_prodotto, quantita, prezzo_acquistato " +
                             "FROM dettaglio_ordine WHERE id_ordine = ?";

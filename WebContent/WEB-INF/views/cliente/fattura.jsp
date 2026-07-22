@@ -26,7 +26,7 @@
                 if (utente != null) {
             %>
                 <p class="info-text"><strong>Nominativo:</strong> <%= utente.getNome() %> <%= utente.getCognome() %></p>
-                <p class="info-text"><strong>Indirizzo:</strong> <%= utente.getIndirizzoSpedizione() %></p>
+                <p class="info-text"><strong>Indirizzo:</strong> <%= request.getAttribute("indirizzoConsegna") != null ? request.getAttribute("indirizzoConsegna") : utente.getIndirizzoSpedizione() %></p>
                 <p class="info-text"><strong>Telefono:</strong> <%= utente.getTelefono() %></p>
                 <p class="info-text"><strong>Metodo di Pagamento:</strong> <%= (request.getAttribute("metodoPagamentoStampato") != null) ? request.getAttribute("metodoPagamentoStampato") : "Non specificato" %></p>
             <% } %>

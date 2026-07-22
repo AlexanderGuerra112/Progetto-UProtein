@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <title>UProtein - Registrazione</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
@@ -24,7 +24,10 @@
             }
         %>
 
-        <form action="${pageContext.request.contextPath}/registrazione" method="POST">
+        <%-- Messaggio di errore dinamico gestito da JavaScript --%>
+        <p id="js-errore-msg" class="errore-msg"></p>
+
+        <form id="registrazioneForm" action="${pageContext.request.contextPath}/registrazione" method="POST">
             <input type="hidden" name="azione" value="salva">
 
             <div class="form-group">
@@ -62,6 +65,8 @@
 
         <p>Hai già un account? <a href="${pageContext.request.contextPath}/login?azione=mostra">Accedi qui</a></p>
     </main>
+
+    <script src="${pageContext.request.contextPath}/js/registrazione.js"></script>
 
 </body>
 </html>

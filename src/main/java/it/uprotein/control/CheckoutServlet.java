@@ -42,6 +42,7 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
+        String indirizzoConsegna = request.getParameter("indirizzoConsegna");
         String titolare = request.getParameter("titolare");
         String numeroCarta = request.getParameter("numero_carta");
         String scadenza = request.getParameter("scadenza");
@@ -49,19 +50,21 @@ public class CheckoutServlet extends HttpServlet {
 
         String numeroCartaPulito = (numeroCarta != null) ? numeroCarta.replaceAll("\\s+", "") : "";
 
-        if (titolare == null || titolare.trim().isEmpty() ||
+        if (indirizzoConsegna == null || indirizzoConsegna.trim().isEmpty() ||
+            titolare == null || titolare.trim().isEmpty() ||
             numeroCartaPulito == null || !numeroCartaPulito.matches("\\d{16}") ||
             scadenza == null || !scadenza.matches("(0[1-9]|1[0-2])/\\d{2}") ||
             cvv == null || !cvv.matches("\\d{3}")) {
             
-            request.setAttribute("errorePagamento", "I dati della carta inseriti non sono validi o sono incompleti.");
+            request.setAttribute("errorePagamento", "I dati inseriti (indirizzo o carta) non sono validi o sono incompleti.");
             request.getRequestDispatcher("/WEB-INF/views/cliente/pagamento.jsp").forward(request, response);
             return;
         }
 
-       
         request.setAttribute("prodottiFattura", new ArrayList<>(carrello.getElementi()));
         request.setAttribute("totaleFattura", carrello.getTotale());
+        request.setAttribute("indirizzoConsegna", indirizzoConsegna.trim());
+
 
         String metodoPagamento = request.getParameter("metodoPagamento");
         if (metodoPagamento == null) metodoPagamento = "Carta di Credito";
@@ -70,11 +73,11 @@ public class CheckoutServlet extends HttpServlet {
         OrdineDAO ordineDao = new OrdineDAOImpl(ds);
 
         try {
-            ordineDao.doSave(utente, carrello, metodoPagamento);
+            ordineDao.doSave(utente, carrello, metodoPagamento, indirizzoConsegna.trim());
             
             carrello.svuota();
             session.setAttribute("carrello", carrello);
-                  
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/cliente/fattura.jsp");
             dispatcher.forward(request, response);
             

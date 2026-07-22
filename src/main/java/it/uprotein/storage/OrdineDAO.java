@@ -10,8 +10,7 @@ import it.uprotein.model.Prodotto; // 1. Aggiungiamo questo import
 public interface OrdineDAO {
 
     // Salva un nuovo ordine (già presente)
-    void doSave(Utente utente, Carrello carrello, String metodoPagamento) throws SQLException;
-
+	void doSave(Utente utente, Carrello carrello, String metodoPagamento, String indirizzoConsegna) throws SQLException;
     // Recupera la lista degli ordini effettuati da un utente (già presente)
     List<Ordine> doRetrieveByUtente(int idUtente) throws SQLException;
 

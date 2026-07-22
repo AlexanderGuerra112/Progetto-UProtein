@@ -6,15 +6,15 @@
     <meta charset="UTF-8">
     <title>UProtein - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/responsive.css">
 </head>
 <body>
 
     <main class="login-container">
         <h2>Accedi a UProtein</h2>
 
-        <%-- Messaggio di errore inviato dalla Servlet --%>
+        <%-- Messaggio di errore inviato dalla Servlet Java --%>
         <%
             String errore = (String) request.getAttribute("errore");
             if (errore != null) {
@@ -24,7 +24,7 @@
             }
         %>
 
-        <%-- Messaggio di successo (es. dopo registrazione) --%>
+        <%-- Messaggio di successo --%>
         <%
             String successo = (String) request.getAttribute("successo");
             if (successo != null) {
@@ -34,7 +34,10 @@
             }
         %>
 
-        <form action="${pageContext.request.contextPath}/login" method="POST">
+       
+        <p id="js-errore-msg" class="errore-msg"></p>
+
+        <form id="loginForm" action="${pageContext.request.contextPath}/login" method="POST">
             <input type="hidden" name="azione" value="controlla">
 
             <div class="form-group">
@@ -52,6 +55,8 @@
 
         <p>Non hai un account? <a href="${pageContext.request.contextPath}/registrazione?azione=mostra">Registrati qui</a></p>
     </main>
+
+    <script src="${pageContext.request.contextPath}/js/login.js"></script>
 
 </body>
 </html>

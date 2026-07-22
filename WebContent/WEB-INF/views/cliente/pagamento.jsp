@@ -62,6 +62,14 @@
                 </div>
 
                 <div class="form-group">
+                   <label for="indirizzoConsegna">Conferma Indirizzo di Consegna</label>
+                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna" required 
+                value="<%= utenteLoggato != null && utenteLoggato.getIndirizzoSpedizione() != null ? utenteLoggato.getIndirizzoSpedizione() : "" %>" 
+               placeholder="Es. Via Roma 12, 80100 Napoli" class="input-field" autocomplete="shipping street-address">
+             </div>
+
+
+                <div class="form-group">
                     <label for="numero_carta">Numero della Carta</label>
                     <input type="text" id="numero_carta" name="numero_carta" required 
                            placeholder="1234 5678 1234 5678" class="input-field" autocomplete="cc-number">
