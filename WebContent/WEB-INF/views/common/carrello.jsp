@@ -120,7 +120,6 @@
             </div>
             <div class="footer-links">
                 <a href="${pageContext.request.contextPath}/chi-siamo">Chi siamo</a>
-            </div>
         </div>
     </footer>
 

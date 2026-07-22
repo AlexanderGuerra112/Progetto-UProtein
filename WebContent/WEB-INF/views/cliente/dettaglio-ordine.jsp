@@ -133,9 +133,7 @@
                 <p>&#169; 2026 UProtein. All rights reserved.</p>
             </div>
             <div class="footer-links">
-                <a href="#">Chi siamo</a>
-                <a href="#">Spedizioni e Resi</a>
-            </div>
+                <a href="${pageContext.request.contextPath}/chi-siamo">Chi siamo</a>
         </div>
     </footer>
 

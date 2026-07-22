@@ -20,9 +20,7 @@ public class Carrello implements Serializable {
         return elementi;
     }
 
-    // Aggiunge un prodotto al carrello. 
-    // MODIFICATO: Se c'è già lo stesso prodotto CON LO STESSO PREZZO, aumenta la quantità.
-    // Altrimenti (es. uno è a prezzo pieno e uno è il regalo a 0€), crea due righe separate!
+    
     public void aggiungiProdotto(Prodotto prodotto, int quantita) {
         for (ElementoCarrello elemento : elementi) {
             if (elemento.getProdotto().getIdProdotto() == prodotto.getIdProdotto() &&
@@ -42,12 +40,12 @@ public class Carrello implements Serializable {
             && Double.compare(elemento.getProdotto().getPrezzo(), prezzo) == 0);
     }
 
-    // Mantiene la compatibilità con la rimozione classica (rimuove tutte le varianti di quell'ID)
+    // Mantiene la compatibilità con la rimozione classica 
     public void rimuoviProdotto(int idProdotto) {
         elementi.removeIf(elemento -> elemento.getProdotto().getIdProdotto() == idProdotto);
     }
 
-    // Svuota completamente il carrello (es. dopo aver acquistato)
+    // Svuota completamente il carrello
     public void svuota() {
         this.elementi = new ArrayList<>();
     }

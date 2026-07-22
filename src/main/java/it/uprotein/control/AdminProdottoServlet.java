@@ -22,8 +22,8 @@ import it.uprotein.storage.ProdottoDAOImpl;
 
 @WebServlet("/admin/adminProdotto")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2,  
-    maxFileSize = 1024 * 1024 * 10,      
+    fileSizeThreshold = 1024 * 1024 * 10,  
+    maxFileSize = 1024 * 1024 * 15,      
     maxRequestSize = 1024 * 1024 * 50     
 )
 public class AdminProdottoServlet extends HttpServlet {

@@ -14,7 +14,7 @@ public class Utente implements Serializable {
     private String ruolo; 
     private String indirizzoSpedizione;
     private String telefono;
-    private Date dataUltimoGiro; //common/ruota della fortuna
+    private Date dataUltimoGiro; 
     public Utente() {}
 
    

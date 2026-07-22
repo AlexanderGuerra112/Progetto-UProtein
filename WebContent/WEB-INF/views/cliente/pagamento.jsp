@@ -91,16 +91,14 @@
         </div>
     </main>
 
-    <footer class="footer">
+   <footer class="footer">
         <div class="footer-inner">
             <div class="footer-brand">
                 <h4>UProtein</h4>
                 <p>&#169; 2026 UProtein. All rights reserved.</p>
             </div>
             <div class="footer-links">
-                <a href="#">Chi siamo</a>
-                <a href="#">Spedizioni e Resi</a>
-            </div>
+                <a href="${pageContext.request.contextPath}/chi-siamo">Chi siamo</a>
         </div>
     </footer>
 

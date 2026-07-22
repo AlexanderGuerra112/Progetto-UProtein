@@ -24,8 +24,7 @@ public class OrdineDAOImpl implements OrdineDAO {
         PreparedStatement psUpdateProdotto = null; 
 
         String insertOrdine = "INSERT INTO ORDINE (id_utente, data_ordine, totale_ordine, indirizzo_consegna , stato_ordine, metodo_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
-        String insertDettaglio = "INSERT INTO DETTAGLIO_ORDINE (id_ordine, id_prodotto, quantita, prezzo_acquistato) VALUES (?, ?, ?, ?)";
-        
+        String insertDettaglio = "INSERT INTO DETTAGLIO_ORDINE (id_ordine, id_prodotto, quantita, prezzo_acquistato, nome_prodotto, categoria_prodotto) VALUES (?, ?, ?, ?, ?, ?)";        
         String selectProdotto = "SELECT disponibilita_magazzino, nome FROM PRODOTTO WHERE id_prodotto = ?";
         String updateProdotto = "UPDATE PRODOTTO SET disponibilita_magazzino = disponibilita_magazzino - ? WHERE id_prodotto = ?";
 
@@ -75,6 +74,8 @@ public class OrdineDAOImpl implements OrdineDAO {
                 psDettaglio.setInt(2, elemento.getProdotto().getIdProdotto());
                 psDettaglio.setInt(3, elemento.getQuantita());
                 psDettaglio.setDouble(4, elemento.getProdotto().getPrezzo());
+                psDettaglio.setString(5, elemento.getProdotto().getNome());
+                psDettaglio.setString(6, elemento.getProdotto().getCategoria());
                 psDettaglio.addBatch();
 
                 // scarico dal magazzino
@@ -104,9 +105,7 @@ public class OrdineDAOImpl implements OrdineDAO {
         }
     }
 
-    // ==========================================================================
-    // NUOVO METODO: Recupera lo storico degli ordini di un utente
-    // ==========================================================================
+    
     @Override
     public List<Ordine> doRetrieveByUtente(int idUtente) throws SQLException {
         List<Ordine> ordini = new ArrayList<>();
@@ -150,7 +149,6 @@ public class OrdineDAOImpl implements OrdineDAO {
         java.sql.ResultSet resultSet = null;
         Ordine ordine = null;
 
-        // Query su misura: usiamo 'totale_ordine' come abbiamo visto nel DB!
         String selectSQL = "SELECT id_ordine, data_ordine, totale_ordine, id_utente FROM ordine WHERE id_ordine = ?";
 
         try {
@@ -163,9 +161,8 @@ public class OrdineDAOImpl implements OrdineDAO {
             if (resultSet.next()) {
                 ordine = new Ordine();
                 ordine.setIdOrdine(resultSet.getInt("id_ordine"));
-                ordine.setDataOrdine(resultSet.getDate("data_ordine")); // sql.Date
+                ordine.setDataOrdine(resultSet.getDate("data_ordine")); 
                 
-                // NOTA: Se nel tuo modello Ordine il metodo si chiama setTotaleOrdine, cambia qui sotto!
                 ordine.setTotale(resultSet.getDouble("totale_ordine")); 
                 
                 ordine.setIdUtente(resultSet.getInt("id_utente"));
@@ -188,11 +185,8 @@ public class OrdineDAOImpl implements OrdineDAO {
         java.sql.ResultSet resultSet = null;
         List<Prodotto> prodotti = new java.util.ArrayList<>();
 
-        // Query su misura: uniamo 'prodotto' e 'dettaglio_ordine' tramite 'id_prodotto'
-        String selectSQL = "SELECT p.*, d.quantita, d.prezzo_acquistato " +
-                           "FROM prodotto p " +
-                           "JOIN dettaglio_ordine d ON p.id_prodotto = d.id_prodotto " +
-                           "WHERE d.id_ordine = ?";
+        String selectSQL = "SELECT id_prodotto, nome_prodotto, categoria_prodotto, quantita, prezzo_acquistato " +
+                            "FROM dettaglio_ordine WHERE id_ordine = ?";
 
         try {
             connection = ds.getConnection();
@@ -204,15 +198,10 @@ public class OrdineDAOImpl implements OrdineDAO {
             while (resultSet.next()) {
                 Prodotto p = new Prodotto();
                 p.setIdProdotto(resultSet.getInt("id_prodotto"));
-                p.setNome(resultSet.getString("nome"));
-                p.setCategoria(resultSet.getString("categoria"));
-                
-                // Recuperiamo il prezzo storico bloccato al momento dell'acquisto
-                p.setPrezzo(resultSet.getDouble("prezzo_acquistato")); 
-                
-                // Impostiamo la quantità acquistata (quella aggiunta al Passo 2)
-                p.setQuantita(resultSet.getInt("quantita")); 
-
+                p.setNome(resultSet.getString("nome_prodotto"));
+                p.setCategoria(resultSet.getString("categoria_prodotto"));
+                p.setPrezzo(resultSet.getDouble("prezzo_acquistato"));
+                p.setQuantita(resultSet.getInt("quantita"));
                 prodotti.add(p);
             }
         } finally {

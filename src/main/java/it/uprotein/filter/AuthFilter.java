@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import it.uprotein.model.Utente;
+
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter {
     private static final long serialVersionUID = 1L;
@@ -25,13 +27,22 @@ public class AuthFilter extends HttpFilter {
         }
 
         HttpSession session = request.getSession(false);
-        String ruolo = (session != null) ? (String) session.getAttribute("ruolo") : null;
+
+        String ruolo = null;
+        if (session != null) {
+            ruolo = (String) session.getAttribute("ruolo");
+            if (ruolo == null) {
+                Utente utente = (Utente) session.getAttribute("utente");
+                if (utente != null) {
+                    ruolo = utente.getRuolo();
+                }
+            }
+        }
 
         boolean autorizzato = false;
 
         if (ruolo != null) {
             if (path.startsWith("/admin/")) {
-                // Solo chi ha ruolo "admin" entra qui
                 autorizzato = "admin".equalsIgnoreCase(ruolo);
             } else if (path.startsWith("/common/")) {
                 autorizzato = true;

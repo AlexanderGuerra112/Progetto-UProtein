@@ -700,10 +700,9 @@ body {
     background-color: var(--bianco);
     padding: 50px;
     border: 1px solid var(--grigio-chiaro);
-    box-shadow: none; /* In stampa le ombre non servono */
+    box-shadow: none; 
 }
 
-/* Header con brand identity UProtein */
 .fattura-header {
     text-align: center;
     border-bottom: 3px solid var(--verde-uprotein);
@@ -719,7 +718,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Formattazione dettagli cliente e titoli sezioni */
 .section-title-small {
     color: var(--quasi-nero);
     font-size: 18px;
@@ -735,7 +733,6 @@ body {
     margin: 4px 0;
 }
 
-/* Tabella specifica per il riepilogo fiscale */
 .fattura-table {
     width: 100%;
     border-collapse: collapse;
@@ -756,13 +753,11 @@ body {
     font-size: 14px;
 }
 
-/* Utility di allineamento */
 .text-right { text-align: right; }
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .font-bold { font-weight: bold; }
 
-/* Riepilogo Totale */
 .fattura-totale {
     margin-top: 20px;
     padding: 20px 0;
@@ -773,7 +768,6 @@ body {
     gap: 15px;
 }
 
-/* Link di navigazione post-acquisto */
 .link-home {
     display: inline-block;
     margin-top: 20px;
@@ -844,7 +838,6 @@ body {
     box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
 }
 
-/* Griglia perfetta per Scadenza e CVV */
 .pagamento-form .form-row-split {
     display: flex;
     gap: 20px;
@@ -856,7 +849,6 @@ body {
     margin-bottom: 0; 
 }
 
-/* Bottone di Checkout */
 .btn-checkout {
     width: 100%;
     border: none;
@@ -872,14 +864,13 @@ body {
 }
 
 .btn-checkout:hover {
-    background-color: #219653; /* Un verde leggermente più scuro al passaggio del mouse */
+    background-color: #219653;
 }
 
 .btn-checkout:active {
     transform: scale(0.98);
 }
 
-/* Link di Annullamento */
 .pagamento-actions {
     text-align: center;
     margin-top: 20px;
@@ -896,7 +887,6 @@ body {
     color: var(--quasi-nero, #2c3e50);
 }
 
-/* Messaggio di errore */
 .pagamento-error {
     background-color: #fde8e8;
     color: #e74c3c;
@@ -910,12 +900,10 @@ body {
 }
 
 @media print {
-    /* Nasconde tutto ciò che non deve finire sulla carta */
     .no-print, .navbar, .footer, .btn-primary, .nav-icons {
         display: none !important;
     }
 
-    /* Ottimizza il container per il foglio A4 */
     .fattura-box {
         margin: 0;
         padding: 0;
@@ -928,7 +916,6 @@ body {
     }
 }
 
-/* Regola base per entrambi i link d'azione della navbar */
 .nav-btn {
     font-weight: bold;
     margin: 0 5px;
@@ -936,40 +923,36 @@ body {
     transition: color 0.2s ease, transform 0.1s ease;
 }
 
-/* Hover universale per feedback al click */
 .nav-btn:active {
     transform: scale(0.95);
 }
 
-/* Stile specifico per il link dell'Area Admin */
 .nav-admin {
-    color: #2ECC71; /* Il tuo verde brillante originale */
+    color: #2ECC71; 
 }
 
 .nav-admin:hover {
-    color: #27ae60; /* Scurisce leggermente all'hover per feedback visivo */
+    color: #27ae60;
 }
 
-/* Stile specifico per il link dello Storico Ordini */
 .nav-orders {
-    color: #2c3e50; /* Blu scuro elegante coordinato al layout */
+    color: #2c3e50; 
 }
 
 .nav-orders:hover {
-    color: #27ae60; /* Verde brillante all'hover */
+    color: #27ae60; 
 }
 
 .nav-icons a.btn-esci {
-    color: #e74c3c; /* Un rosso acceso ed elegante */
+    color: #e74c3c; 
     font-weight: bold;
     margin-left: 10px;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
-/* Effetto al passaggio del mouse */
 .nav-icons a.btn-esci:hover {
-    color: #c0392b; /* Un rosso più scuro (bordeaux) quando ci passi sopra */
+    color: #c0392b; 
 }
 
 * Spazio centrale per la tabella storico */
@@ -987,7 +970,6 @@ body {
     text-align: center;
 }
 
-/* Tabella Responsiva */
 .tabella-responsiva {
     width: 100%;
     overflow-x: auto;
@@ -1026,7 +1008,6 @@ body {
     color: #2c3e50;
 }
 
-/* Badge Stato */
 .badge-stato {
     display: inline-block;
     padding: 5px 12px;
@@ -1041,7 +1022,6 @@ body {
     color: #155724;
 }
 
-/* Bottone Dettaglio */
 .btn-dettaglio {
     display: inline-block;
     padding: 8px 14px;
@@ -1058,7 +1038,6 @@ body {
     background-color: #2c3e50;
 }
 
-/* Messaggio di tabella vuota */
 .messaggio-vuoto {
     text-align: center;
     padding: 50px 20px;
@@ -1095,10 +1074,9 @@ body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Card riepilogativa superiore */
 .info-ordine-card {
     background-color: #fcfcfc;
-    border-left: 6px solid #2ecc71; /* Un tocco di verde UProtein */
+    border-left: 6px solid #2ecc71;
     padding: 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -1127,7 +1105,6 @@ body {
     font-weight: bold;
 }
 
-/* Tabella dettagli righe */
 .dettaglio-prodotto-nome {
     display: flex;
     flex-direction: column;
@@ -1151,7 +1128,6 @@ body {
     display: inline-block;
 }
 
-/* Pulsante indietro */
 .azione-ritorno {
     margin-top: 40px;
     text-align: center;
@@ -1164,7 +1140,7 @@ body {
     color: #ffffff !important;
     text-decoration: none;
     font-weight: bold;
-    border-radius: 50px; /* Bel design arrotondato modernissimo */
+    border-radius: 50px; 
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
