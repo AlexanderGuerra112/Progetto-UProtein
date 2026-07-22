@@ -130,6 +130,8 @@
                 <h4>UProtein</h4>
                 <p>&#169; 2026 UProtein. All rights reserved.</p>
             </div>
+            <div class="footer-links">
+                <a href="${pageContext.request.contextPath}/chi-siamo">Chi siamo</a>
         </div>
     </footer>
 <script src="<%= request.getContextPath() %>/js/pop-up.js"></script>
