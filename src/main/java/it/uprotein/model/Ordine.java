@@ -15,7 +15,7 @@ public class Ordine implements Serializable {
     private String statoOrdine;
     private String metodoPagamento;
 
-    // Costruttore vuoto (richiesto dai JavaBean)
+    
     public Ordine() {}
 
     // Getter e Setter

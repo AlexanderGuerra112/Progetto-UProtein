@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Verifica che gli elementi esistano nella pagina
     if (cardInput && expiryInput && cvvInput) {
         
-        // 1. Formattazione Numero Carta (Spazio ogni 4 cifre, max 16 cifre)
+        // Formattazione Numero Carta (Spazio ogni 4 cifre, max 16 cifre)
         cardInput.addEventListener("input", function(e) {
             var value = e.target.value.replace(/\D/g, ""); // Solo numeri
             var matches = value.match(/.{1,4}/g);
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
             e.target.value = formatted.substring(0, 19); // 16 cifre + 3 spazi
         });
 
-        // 2. Formattazione Data di Scadenza (MM/AA con slash automatico)
+        //  Formattazione Data di Scadenza (MM/AA con slash automatico)
         expiryInput.addEventListener("input", function(e) {
             var value = e.target.value.replace(/\D/g, ""); // Solo numeri
             
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (month < 1) month = 1;
                 if (month > 12) month = 12;
                 
-                // Formatta il mese con lo zero davanti senza usare padStart (che Eclipse potrebbe non digerire)
+                // Formatta il mese con lo zero davanti senza usare padStart 
                 var monthStr = (month < 10 ? "0" : "") + month;
                 e.target.value = monthStr + "/" + value.substring(2, 4);
             } else {
